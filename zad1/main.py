@@ -1,4 +1,4 @@
-def is_number(input_string):
+def is_positive_number(input_string):
     liczba = input_string
 
     while not (liczba.isnumeric()):
@@ -12,12 +12,12 @@ def main():
     ilosc = input("Podaj liczbe nieparzyta dodatnia: ")
     space = 0
 
-    ilosc = int(is_number(ilosc))
+    ilosc = int(is_positive_number(ilosc))
 
     while ilosc % 2 == 0:
         print()
         ilosc = input("Podana liczba nie jest nieparzysta, podaj ponownie: ")
-        ilosc = int(is_number(ilosc))
+        ilosc = int(is_positive_number(ilosc))
 
     print("\nWpisano liczbe: " + str(ilosc) + "\n")
     while ilosc > 0:
@@ -30,4 +30,5 @@ def main():
         print()
 
 
-main()
+if __name__ == '__main__':
+    main()
