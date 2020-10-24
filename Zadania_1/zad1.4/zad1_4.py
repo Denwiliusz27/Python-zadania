@@ -15,22 +15,27 @@ def main():
     x = input("\nPodaj liczbe kolumn: ")
     x = int(is_positive_number(x))
 
-    if (x > 0) and (y > 0):
-        tabela = '+'
-    else:
-        return
+    while (x == 0) or (y == 0):
+        if x == 0:
+            x = input("\nPodano zerowa liczbe kolumn. Wpisz ponownie: ")
+            x = int(is_positive_number(x))
+        if y == 0:
+            y = input("\nPodano zerowa liczbe wierszy. Wpisz ponownie: ")
+            y = int(is_positive_number(y))
 
-    for i in range(1, y):
-        for j in range(1, x):
+    tabela = '+'
+
+    for i in range(0, y + 1):
+        for j in range(0, x):
             tabela += "---+"
         tabela += '\n'
         if i < y:
             tabela += '|'
-            for n in range(1, x):
+            for n in range(0, x):
                 tabela += '   |'
             tabela += '\n+'
 
-    print(tabela)
+    print("\n" + tabela)
 
 
 if __name__ == '__main__':
