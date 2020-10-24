@@ -12,21 +12,24 @@ def main():
     dlugosc = input("\nPodaj dlugosc miarki: ")
     dlugosc = int(is_positive_number(dlugosc))
     miarka = '|'
-    liczby = ''
 
     for odcinek in range(dlugosc):
         for kropka in range(4):
             miarka += '.'
         miarka += '|'
 
-    for i in range(dlugosc+1):
-        liczby += str(i)
-        if i >= 9:
-            liczby += "   "
+    miarka += '\n'
+
+    for i in range(dlugosc + 1):
+        miarka += str(i)
+        if i >= 99:
+            miarka += "  "
+        elif i >= 9:
+            miarka += "   "
         else:
-            liczby += "    "
+            miarka += "    "
 
     print(miarka)
-    print(liczby)
+
 
 main()
