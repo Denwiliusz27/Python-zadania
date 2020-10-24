@@ -12,16 +12,18 @@ def main():
     y = input("\nPodaj liczbe wierszy: ")
     y = int(is_positive_number(y))
 
+    if y == 0:
+        while y == 0:
+            y = input("\nPodano zerowa liczbe wierszy. Wpisz ponownie: ")
+            y = int(is_positive_number(y))
+
     x = input("\nPodaj liczbe kolumn: ")
     x = int(is_positive_number(x))
 
-    while (x == 0) or (y == 0):
-        if x == 0:
+    if x == 0:
+        while x == 0:
             x = input("\nPodano zerowa liczbe kolumn. Wpisz ponownie: ")
             x = int(is_positive_number(x))
-        if y == 0:
-            y = input("\nPodano zerowa liczbe wierszy. Wpisz ponownie: ")
-            y = int(is_positive_number(y))
 
     tabela = '+'
 
@@ -35,7 +37,8 @@ def main():
                 tabela += '   |'
             tabela += '\n+'
 
-    print("\n" + tabela)
+    print("\nTabela ", y, "x", x, " :")
+    print(tabela)
 
 
 if __name__ == '__main__':
