@@ -1,17 +1,17 @@
-def iteracja(lista, indeksy):
-    index = 1
+def iteracja(lista, element):
     print("mam tabele: ", lista)
+    l_length = 0
 
     for i in lista:
         if isinstance(i, list):
-            indeksy.append(lista.index(i))
-            print("index: ", index)
             print("wchodze do tabeli: ", i)
-            index += 1
-            iteracja(i, indeksy)
+            iteracja(lista[lista.index(i)], element)
+        else:
+            l_length += 1
 
-    print("indeks na koncu: ", index)
-    return index, indeksy
+    if l_length == len(lista):
+        lista.append(element)
+    return
 
 
 def add(lista, element):
@@ -25,12 +25,16 @@ def add(lista, element):
 
 
 def main():
-    #lista = [1, 2, [3, 4, [5, 6], 5], 3, [2, [3, [4, 6]]], 4]
+    # lista = [1, 2, [3, 4, [5, 6], 5], 3, [2, [3, [4, 6]]], 4]
     lista = [1, 2, [3, 4, [5, 6], 5], 3, 4]
     amount_of_nested_list = 0
     index = 0
     indeksy = []
 
+    iteracja(lista, 99)
+    print(lista)
+
+"""    
     for i in lista:
         if isinstance(i, list):
             amount, indeksy = iteracja(i, indeksy)
@@ -42,10 +46,9 @@ def main():
 
     print(amount_of_nested_list)
     print(indeksy)
-    
 
     #add(lista[index], 101)
     print(lista)
-
+"""
 
 main()
