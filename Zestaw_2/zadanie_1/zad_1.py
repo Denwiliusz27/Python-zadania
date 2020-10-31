@@ -1,11 +1,11 @@
-def iteracja(lista, element):
-    print("mam tabele: ", lista)
+def add(lista, element):
+    #print("mam tabele: ", lista)
     l_length = 0
 
     for i in lista:
         if isinstance(i, list):
-            print("wchodze do tabeli: ", i)
-            iteracja(lista[lista.index(i)], element)
+            #print("wchodze do tabeli: ", i)
+            add(lista[lista.index(i)], element)
         else:
             l_length += 1
 
@@ -14,30 +14,40 @@ def iteracja(lista, element):
     return
 
 
-def add(lista, element):
+def longest_nested_list(lista):
+    length = 0
+    temp = 0
+    #print("wchodze z : ", lista)
+    print("indeks = ", temp)
+
     for i in lista:
         if isinstance(i, list):
-            print("wchodze do tabeli: ", i)
-            add(i, element)
-        else:
-            print("chce dodac")
-            lista.append(element)
+            length += 1
+            print("mam liste: ", i)
+            temp += longest_nested_list(i)
+
+        if temp > length:
+            length = temp
+    return length
+
+
 
 
 def main():
-    # lista = [1, 2, [3, 4, [5, 6], 5], 3, [2, [3, [4, 6]]], 4]
-    lista = [1, 2, [3, 4, [5, 6], 5], 3, 4]
+    lista = [1, 2, [3, 4, [5, 6], 5], 3, [2, [3, [4, 6]]], 4]
     amount_of_nested_list = 0
     index = 0
     indeksy = []
 
-    iteracja(lista, 99)
+    add(lista, 99)
     print(lista)
+
+    print(longest_nested_list(lista))
 
 """    
     for i in lista:
         if isinstance(i, list):
-            amount, indeksy = iteracja(i, indeksy)
+            amount, indeksy = add(i, indeksy)
             if amount > amount_of_nested_list:
                 amount_of_nested_list = amount
                 index = lista.index(i)
