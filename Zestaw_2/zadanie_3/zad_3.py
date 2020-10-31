@@ -3,6 +3,7 @@ def main():
     ilosc_slow = 0
     ilosc_liter = 0
     dlugosc_slowa = 0
+    temp = 0
     lista = list()
 
     for znak in lancuch:
@@ -13,13 +14,16 @@ def main():
             dlugosc_slowa += 1
             print("ilosc_liter: ", ilosc_liter)
             print("dlugosc_slowa: ", dlugosc_slowa)
-            if znak not in list:
-                list1 = [znak, 1]
-                lista.append(list1)
-            else:
-                for i in lista:
-                    if i[0]
 
+            for i in lista:
+                if ord(znak) == ord(i[0]):
+                    print("jest")
+                    temp += 1
+                
+                else:
+                    list1 = [znak, 1]
+                    lista.append(list1)
+                    i[1] += 1
 
         elif ord(znak) == 32:
             ilosc_slow += 1
@@ -27,11 +31,11 @@ def main():
             print("ilosc_slow: ", ilosc_slow)
 
     ilosc_slow += 1
-    dlugosc_slowa = 0
 
     print("~~~~~~~~~~~~~~")
     print("ilosc_slow: ", ilosc_slow)
     print("ilosc_liter: ", ilosc_liter)
+    print(lista)
 
 
 if __name__ == '__main__':
