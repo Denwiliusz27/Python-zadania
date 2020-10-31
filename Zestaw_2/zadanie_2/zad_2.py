@@ -5,23 +5,19 @@ def is_positive_number(input_string):
         print()
         liczba = input("Niepoprawne dane, wpisz ponownie: ")
 
-    return liczba
+    liczba = int(liczba)
 
+    while liczba < 1900 or liczba > 100000:
+        liczba = input("\nLiczba nie nalezy do zakresu, wpisz ponownie: ")
+        liczba = int(is_positive_number(liczba))
+        break
 
-def is_in_range(liczba):
-    while 1:
-        if liczba < 1900 or liczba > 100000:
-            liczba = input("\nLiczba nie nalezy do zakresu, wpisz ponownie: ")
-            liczba = is_positive_number(liczba)
-            break
-
-    return liczba
+    return int(liczba)
 
 
 def main():
     rok = input("Podaj rok z zakresu 1900 - 100000: ")
     rok = is_positive_number(rok)
-    rok = is_in_range(rok)
     print("Wpisano: ", rok)
 
 
