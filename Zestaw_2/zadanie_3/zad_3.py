@@ -3,11 +3,11 @@ def main():
     ilosc_slow = 0
     ilosc_liter = 0
     dlugosc_slowa = 0
-    temp = 0
-    lista = list()
+    lista_znakow = list()
+    czestosc_wystepowania = list()
 
     for znak in lancuch:
-        print("Mam: ", znak, " o kodzie: ", ord(znak))
+        print("Mam: ", znak)
 
         if (64 < ord(znak) < 91) or (96 < ord(znak) < 123):
             ilosc_liter += 1
@@ -15,15 +15,8 @@ def main():
             print("ilosc_liter: ", ilosc_liter)
             print("dlugosc_slowa: ", dlugosc_slowa)
 
-            for i in lista:
-                if ord(znak) == ord(i[0]):
-                    print("jest")
-                    temp += 1
-                
-                else:
-                    list1 = [znak, 1]
-                    lista.append(list1)
-                    i[1] += 1
+            if znak not in lista_znakow:
+                lista_znakow.append(znak)
 
         elif ord(znak) == 32:
             ilosc_slow += 1
@@ -32,10 +25,19 @@ def main():
 
     ilosc_slow += 1
 
+    for znak in lista_znakow:
+        czestosc_wystepowania.append([znak, 0])
+
+    for znak in lancuch:
+        for para in czestosc_wystepowania:
+            if ord(znak) == ord(para[0]):
+                para[1] += 1
+
     print("~~~~~~~~~~~~~~")
     print("ilosc_slow: ", ilosc_slow)
     print("ilosc_liter: ", ilosc_liter)
-    print(lista)
+    print(lista_znakow)
+    print(czestosc_wystepowania)
 
 
 if __name__ == '__main__':
