@@ -11,6 +11,7 @@ def is_positive_number(input_string):
 def fun(N):
     liczba = ""
     dl_przerwy = 0
+    temp = 0
 
     while N != 0:
         if N % 2 == 0:
@@ -19,17 +20,24 @@ def fun(N):
             liczba = "1" + liczba
         N = N // 2
 
+    print("\nLiczba = ", liczba)
+
     for znak in liczba:
+        if znak == "0":
+            temp += 1
+        elif znak == "1" and temp > 0:
+            if temp > dl_przerwy:
+                dl_przerwy = temp
+            temp = 0
 
-
-    return liczba
+    return dl_przerwy
 
 
 def main():
     liczba = input("Podaj liczbe w systemie dziesietnym z przedzialu [1, 2147483647]: ")
     liczba = int(is_positive_number(liczba))
 
-    print(liczba)
+    print("Dlugosc najdluzszej binarnej pzrerwy: ", fun(liczba))
 
 
 if __name__ == '__main__':
