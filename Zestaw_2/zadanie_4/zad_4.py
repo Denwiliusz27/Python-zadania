@@ -1,7 +1,7 @@
 def is_positive_number(input_string):
     liczba = input_string
 
-    while not (liczba.isnumeric()) or int(liczba) == 0:
+    while not (liczba.isnumeric()):
         print()
         liczba = input("Niepoprawne dane, wpisz ponownie: ")
 
@@ -25,7 +25,6 @@ def main():
 
     print("\nLista mozliwych kombinacji i, j oraz k:")
     print(lista)
-
 
 
 if __name__ == '__main__':
