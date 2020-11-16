@@ -53,19 +53,11 @@ def main():
             speed = [speed[0], speed[1] - ballrect.top * accel[1]]
         elif keys[pygame.K_DOWN]:
             speed = [speed[0], speed[1] + ballrect.bottom * accel[1]]
-            
         elif keys[pygame.K_LEFT]:
-            speed = [speed[0] - ballrect.left * accel[0], 0]
+            speed = [speed[0] - ballrect.left * accel[0], speed[1]]
         elif keys[pygame.K_RIGHT]:
-            speed = [speed[0] + ballrect.right * accel[0], 0]
-        elif keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
-            speed = [ballrect.top * accel[0], -ballrect.top * accel[1]]
-        elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
-            speed = [ballrect.top * accel[0], ballrect.top * accel[1]]
-        elif keys[pygame.K_LEFT] and keys[pygame.K_UP]:
-            speed = [-ballrect.top * accel[0], -ballrect.top * accel[1]]
-        elif keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
-            speed = [-ballrect.top * accel[0], ballrect.top * accel[1]]
+            speed = [speed[0] + ballrect.right * accel[0], speed[1]]
+
 
         ballrect = ballrect.move(speed)
         if ballrect.left < 0 or ballrect.right > window_width:
