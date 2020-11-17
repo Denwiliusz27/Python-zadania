@@ -1,4 +1,5 @@
 import pygame, sys
+
 pygame.init()
 
 
@@ -7,8 +8,8 @@ def main():
 
     pygame.display.set_caption("Pilka")  # nadaje tytul okienka
 
-    pygame.mixer.music.load("music.wav")  # dodaje muzyke
-    pygame.mixer.music.play(-1)  # odtwarzanie w pętli
+    # pygame.mixer.music.load("music.wav")  # dodaje muzyke
+    # pygame.mixer.music.play(-1)  # odtwarzanie w pętli
 
     window_size = window_width, window_height = 1000, 700  # rozmiary okienka
     window = pygame.display.set_mode(window_size)  # utworzone okienko
@@ -27,13 +28,14 @@ def main():
     ball = pygame.image.load("jabulani.png")
     ball = pygame.transform.scale(ball, ball_size)
     window.blit(ball, (window_width / 2, window_height / 2))
-    ballrect = ball.get_rect(center=(window_width / 2, window_height / 5))
+    ballrect = ball.get_rect(center=(window_width / 2, window_height / 2))
     pygame.display.flip()  # odswieza, przerysowuje
 
     speed = [0, 0]
-    accel = [7, 7]
+    accel = [5, 5]
     time = 1
     g = 9.81
+
 
     while True:
         clock.tick(60)  # ustawia ilosc fps
@@ -78,7 +80,6 @@ def main():
             speed[1] = -speed[1]
             ball_x = ballrect.centerx
             ballrect = ball.get_rect(center=(ball_x, b_heigh / 2))
-
 
         window.blit(background_image, surf_center)  # rysuje tlo w oknie
         window.blit(ball, ballrect)
