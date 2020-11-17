@@ -62,12 +62,22 @@ def main():
         speed = [speed[0], speed[1] + g]
 
         ballrect = ballrect.move(speed)
-        if ballrect.left <= 0 or ballrect.right >= window_width:
+        if ballrect.right > window_width:
             speed[0] = -speed[0]
-        if ballrect.bottom >= window_height:
-            ball_x = ballrect.centerx
-            ballrect = ball.get_rect(center=(ball_x, window_height-50))
+            ball_y = ballrect.centery
+            ballrect = ball.get_rect(center=(window_width - b_width / 2, ball_y))
+        if ballrect.left < 0:
+            speed[0] = -speed[0]
+            ball_y = ballrect.centery
+            ballrect = ball.get_rect(center=(b_width / 2, ball_y))
+        if ballrect.bottom > window_height:
             speed[1] = -speed[1]
+            ball_x = ballrect.centerx
+            ballrect = ball.get_rect(center=(ball_x, window_height - b_heigh / 2))
+        if ballrect.top < 0:
+            speed[1] = -speed[1]
+            ball_x = ballrect.centerx
+            ballrect = ball.get_rect(center=(ball_x, b_heigh / 2))
 
 
         window.blit(background_image, surf_center)  # rysuje tlo w oknie
