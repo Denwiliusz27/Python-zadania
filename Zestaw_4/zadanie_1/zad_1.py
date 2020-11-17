@@ -33,15 +33,15 @@ def main():
     pygame.display.flip()  # odswieza, przerysowuje
 
     speed = [0, 0]
-    accel = [0.01, 0.01]
+    accel = [2, 2]
+    time = 1
 
     while True:
         clock.tick(60)  # ustawia ilosc fps
-        # print(clock.get_fps())
         pygame.time.delay(50)  # ustawia opoznienie
+        # print(clock.get_fps())
 
         for event in pygame.event.get():
-            print(event)
             if event.type == pygame.QUIT:
                 sys.exit()
 
@@ -50,14 +50,13 @@ def main():
         if keys[pygame.K_ESCAPE]:
             sys.exit()
         elif keys[pygame.K_UP]:
-            speed = [speed[0], speed[1] - ballrect.top * accel[1]]
+            speed = [speed[0], speed[1] - time * accel[1]]
         elif keys[pygame.K_DOWN]:
-            speed = [speed[0], speed[1] + ballrect.bottom * accel[1]]
+            speed = [speed[0], speed[1] + time * accel[1]]
         elif keys[pygame.K_LEFT]:
-            speed = [speed[0] - ballrect.left * accel[0], speed[1]]
+            speed = [speed[0] - time * accel[0], speed[1]]
         elif keys[pygame.K_RIGHT]:
-            speed = [speed[0] + ballrect.right * accel[0], speed[1]]
-
+            speed = [speed[0] + time * accel[0], speed[1]]
 
         ballrect = ballrect.move(speed)
         if ballrect.left < 0 or ballrect.right > window_width:
