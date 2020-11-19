@@ -28,14 +28,15 @@ def main():
     ball = pygame.image.load("jabulani.png")
     ball = pygame.transform.scale(ball, ball_size)
     window.blit(ball, (window_width / 2, window_height / 2))
-    ballrect = ball.get_rect(center=(window_width / 2, window_height / 2))
+    ballrect = ball.get_rect(center=(window_width / 2, 150))
     pygame.display.flip()  # odswieza, przerysowuje
 
-    speed = [0, 0]
-    accel = [5, 5]
+    speed = [20, 30]
+    accel = [5, 9.81]
     time = 1
     g = 9.81
-
+    ball_x = 500
+    ball_y = 300
 
     while True:
         clock.tick(60)  # ustawia ilosc fps
@@ -61,25 +62,35 @@ def main():
         elif keys[pygame.K_RIGHT]:
             speed = [speed[0] + time * accel[0], speed[1]]
 
-        speed = [speed[0], speed[1] + g]
+        #ball_x = ball_x + speed[0]
+        #ball_y = ball_y + speed[1] + 1/2 * accel[1]
+        #speed[1] = speed[1] + accel[1]
+
+        #ballrect = ball.get_rect(center=(ball_x, ball_y))
+
+        speed = [speed[0], speed[1] + 1/2 * g * time ]
+
 
         ballrect = ballrect.move(speed)
         if ballrect.right > window_width:
             speed[0] = -speed[0]
-            ball_y = ballrect.centery
-            ballrect = ball.get_rect(center=(window_width - b_width / 2, ball_y))
+            ballrect.right = window_width
+            #ball_y = ballrect.centery
+            #ballrect = ball.get_rect(center=(window_width - b_width / 2, ball_y))
         if ballrect.left < 0:
             speed[0] = -speed[0]
-            ball_y = ballrect.centery
-            ballrect = ball.get_rect(center=(b_width / 2, ball_y))
+            ballrect.left = 0
+            #ball_y = ballrect.centery
+            #ballrect = ball.get_rect(center=(b_width / 2, ball_y))
         if ballrect.bottom > window_height:
             speed[1] = -speed[1]
-            ball_x = ballrect.centerx
-            ballrect = ball.get_rect(center=(ball_x, window_height - b_heigh / 2))
+            ballrect.bottom = window_height
+            #ball_x = ballrect.centerx
+            #ballrect = ball.get_rect(center=(ball_x, window_height - b_heigh / 2))
         if ballrect.top < 0:
             speed[1] = -speed[1]
             ball_x = ballrect.centerx
-            ballrect = ball.get_rect(center=(ball_x, b_heigh / 2))
+            #ballrect = ball.get_rect(center=(ball_x, b_heigh / 2))
 
         window.blit(background_image, surf_center)  # rysuje tlo w oknie
         window.blit(ball, ballrect)
