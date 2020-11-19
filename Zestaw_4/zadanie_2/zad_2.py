@@ -31,8 +31,8 @@ def main():
     ballrect = ball.get_rect(center=(window_width / 2, 150))
     pygame.display.flip()  # odswieza, przerysowuje
 
-    speed = [20, 30]
-    accel = [5, 9.81]
+    speed = [0, 0]
+    accel = [5, 5]
     time = 1
     g = 9.81
     ball_x = 500
@@ -44,8 +44,6 @@ def main():
         # print(clock.get_fps())
 
         for event in pygame.event.get():
-            print("speed:", speed)
-            print("top:", ballrect.top, " bottom:", ballrect.bottom)
             if event.type == pygame.QUIT:
                 sys.exit()
 
@@ -54,43 +52,47 @@ def main():
         if keys[pygame.K_ESCAPE]:
             sys.exit()
         elif keys[pygame.K_UP]:
-            speed = [speed[0], speed[1] - time * accel[1]]
+            speed = [speed[0], speed[1] - time * accel[1] - g]
+            print("UP")
         elif keys[pygame.K_DOWN]:
             speed = [speed[0], speed[1] + time * accel[1]]
+            print("DOWN")
         elif keys[pygame.K_LEFT]:
+            print("LEFT")
             speed = [speed[0] - time * accel[0], speed[1]]
         elif keys[pygame.K_RIGHT]:
+            print("UP")
             speed = [speed[0] + time * accel[0], speed[1]]
 
-        #ball_x = ball_x + speed[0]
-        #ball_y = ball_y + speed[1] + 1/2 * accel[1]
-        #speed[1] = speed[1] + accel[1]
+        ball_x += speed[0]
+        ball_y += speed[1] + 1/2 * g * time
+        speed[1] += g
 
-        #ballrect = ball.get_rect(center=(ball_x, ball_y))
+        ballrect = ball.get_rect(center=(ball_x, ball_y))
 
-        speed = [speed[0], speed[1] + 1/2 * g * time ]
-
+        # speed = [speed[0], speed[1] + g]
+        print("speed:", speed)
 
         ballrect = ballrect.move(speed)
         if ballrect.right > window_width:
             speed[0] = -speed[0]
             ballrect.right = window_width
-            #ball_y = ballrect.centery
-            #ballrect = ball.get_rect(center=(window_width - b_width / 2, ball_y))
+            # ball_y = ballrect.centery
+            # ballrect = ball.get_rect(center=(window_width - b_width / 2, ball_y))
         if ballrect.left < 0:
             speed[0] = -speed[0]
             ballrect.left = 0
-            #ball_y = ballrect.centery
-            #ballrect = ball.get_rect(center=(b_width / 2, ball_y))
+            # ball_y = ballrect.centery
+            # ballrect = ball.get_rect(center=(b_width / 2, ball_y))
         if ballrect.bottom > window_height:
             speed[1] = -speed[1]
             ballrect.bottom = window_height
-            #ball_x = ballrect.centerx
-            #ballrect = ball.get_rect(center=(ball_x, window_height - b_heigh / 2))
+            # ball_x = ballrect.centerx
+            # ballrect = ball.get_rect(center=(ball_x, window_height - b_heigh / 2))
         if ballrect.top < 0:
             speed[1] = -speed[1]
             ball_x = ballrect.centerx
-            #ballrect = ball.get_rect(center=(ball_x, b_heigh / 2))
+            # ballrect = ball.get_rect(center=(ball_x, b_heigh / 2))
 
         window.blit(background_image, surf_center)  # rysuje tlo w oknie
         window.blit(ball, ballrect)
