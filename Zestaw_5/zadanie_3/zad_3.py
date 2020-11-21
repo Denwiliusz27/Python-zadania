@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from random import randint
 
 pygame.init()
@@ -6,6 +6,7 @@ pygame.init()
 # kolory
 CZARNY = (0, 0, 0)
 BIALY = (255, 255, 255)
+
 
 class Rakietka(pygame.sprite.Sprite):
     # klasa Rakietka dziedziczy z klasy "Sprite" w Pygame.
@@ -26,17 +27,17 @@ class Rakietka(pygame.sprite.Sprite):
         # pobieramy prostokąt (jego rozmiary) z obiektu image
         self.rect = self.image.get_rect()
 
-    def moveUp(self, pixels):
-        self.rect.y -= pixels
+    def moveLeft(self, pixels):
+        self.rect.x -= pixels
         # sprawdzanie położenia brzegowego
-        if self.rect.y < 0:
-            self.rect.y = 0
+        if self.rect.x < 0:
+            self.rect.x = 0
 
-    def moveDown(self, pixels):
-        self.rect.y += pixels
+    def moveRight(self, pixels):
+        self.rect.x += pixels
         # sprawdzanie położenia brzegowego
-        if self.rect.y > 400:
-            self.rect.y = 400
+        if self.rect.x > 600:
+            self.rect.x = 600
 
 
 class Pilka(pygame.sprite.Sprite):
@@ -55,7 +56,7 @@ class Pilka(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, color, [0, 0, width, height])
 
         # losowanie prędkości
-        self.velocity = [randint(4, 8), randint(-8, 8)]
+        self.velocity = [randint(-8, 0), randint(4, 8)]
 
         # pobieramy prostokąt (jego rozmiary) z obiektu image
         self.rect = self.image.get_rect()
@@ -65,8 +66,8 @@ class Pilka(pygame.sprite.Sprite):
         self.rect.y += self.velocity[1]
 
     def bounce(self):
-        self.velocity[0] = -self.velocity[0]
-        self.velocity[1] = randint(-8, 8)
+        self.velocity[1] = -self.velocity[1]
+        self.velocity[0] = randint(-8, 8)
 
 
 # definiujemy rozmiary i otwieramy nowe okno
@@ -75,23 +76,18 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Ping Pong")
 
 rakietkaA = Rakietka(BIALY, 100, 10)
-rakietkaA.rect.x = 20
-rakietkaA.rect.y = 200
-
-rakietkaB = Rakietka(BIALY, 10, 100)
-rakietkaB.rect.x = 670
-rakietkaB.rect.y = 200
+rakietkaA.rect.x = 300
+rakietkaA.rect.y = 470
 
 pileczka = Pilka(BIALY, 10, 10)
-pileczka.rect.x = 345
-pileczka.rect.y = 195
+pileczka.rect.x = randint(0, 690)
+pileczka.rect.y = randint(0, 150)
 
 # lista wszystkich widzalnych obiektów potomnych z klasy Sprite
 all_sprites_list = pygame.sprite.Group()
 
 # dodanie obu rakietek i piłeczki do listy
 all_sprites_list.add(rakietkaA)
-all_sprites_list.add(rakietkaB)
 all_sprites_list.add(pileczka)
 
 # zaczynamy właściwy blok programu
@@ -102,7 +98,6 @@ clock = pygame.time.Clock()
 
 # Początkowe wyniki graczy
 scoreA = 0
-scoreB = 0
 
 # -------- GLÓWNA PĘTLA PROGRAMU -----------
 while kontynuuj:
@@ -113,40 +108,58 @@ while kontynuuj:
 
     # ruchy obiektów Rakietkas klawisze strzałka góra dół lub klawisz w s
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        rakietkaA.moveUp(5)
-    if keys[pygame.K_s]:
-        rakietkaA.moveDown(5)
-    if keys[pygame.K_UP]:
-        rakietkaB.moveUp(5)
-    if keys[pygame.K_DOWN]:
-        rakietkaB.moveDown(5)
+    if keys[pygame.K_LEFT]:
+        rakietkaA.moveLeft(5)
+    if keys[pygame.K_RIGHT]:
+        rakietkaA.moveRight(5)
 
     # aktualizacja listy duszków
     all_sprites_list.update()
 
     # sprawdzenie czy piłeczka nie uderza w którąś ścianę
     # i odpowiednie naliczenie punktu jeśli minie rakietkę A lub B i uderzy w ścianę za nią
-    if pileczka.rect.x >= 690:
-        scoreA += 1
+    if pileczka.rect.x > 690:
         pileczka.velocity[0] = -pileczka.velocity[0]
-    if pileczka.rect.x <= 0:
-        scoreB += 1
+    if pileczka.rect.x < 0:
         pileczka.velocity[0] = -pileczka.velocity[0]
-    if pileczka.rect.y > 490:
-        pileczka.velocity[1] = -pileczka.velocity[1]
-    if pileczka.rect.y < 0:
+    if pileczka.rect.y >= 490:
+        file = open("wynik.txt", "r")
+        wynik = int(file.read())
+        file.close()
+
+        font = pygame.font.Font(None, 74)
+        text = font.render("Max wynik: ", 1, BIALY)
+        screen.blit(text, (230, 190))
+
+        if scoreA > wynik:
+            file = open("wynik.txt", "w")
+            file.write(str(scoreA))
+            wynik = scoreA
+            file.close()
+
+        font = pygame.font.Font(None, 74)
+        text = font.render(str(wynik), 1, BIALY)
+        screen.blit(text, (540, 190))
+
+        all_sprites_list.remove(pileczka)
+        font = pygame.font.Font(None, 74)
+        text = font.render("Koniec gry", 1, (255, 0, 0))
+        screen.blit(text, (220, 240))
+        pygame.display.flip()
+        sys.exit()
+    if pileczka.rect.y <= 0:
         pileczka.velocity[1] = -pileczka.velocity[1]
 
-    # sprawdzenie kolizji piłeczki z obiektem rakietkaA lub rakietkaB
-    if pygame.sprite.collide_mask(pileczka, rakietkaA) or pygame.sprite.collide_mask(pileczka, rakietkaB):
+    # sprawdzenie kolizji piłeczki z obiektem rakietkaA
+    if pygame.sprite.collide_mask(pileczka, rakietkaA):
+        scoreA += 1
         pileczka.bounce()
 
     # RYSOWANIE
     # czarny ekran
     screen.fill(CZARNY)
     # cienka linia przez środek boiska
-    pygame.draw.line(screen, BIALY, [349, 0], [349, 500], 5)
+    # pygame.draw.line(screen, BIALY, [0, 249], [699, 249], 5)
 
     # narysowanie obiektów
     all_sprites_list.draw(screen)
@@ -154,9 +167,7 @@ while kontynuuj:
     # wyświetlanie wyników
     font = pygame.font.Font(None, 74)
     text = font.render(str(scoreA), 1, BIALY)
-    screen.blit(text, (250, 10))
-    text = font.render(str(scoreB), 1, BIALY)
-    screen.blit(text, (420, 10))
+    screen.blit(text, (330, 10))
 
     # odświeżenie / przerysowanie całego ekranu
     pygame.display.flip()
