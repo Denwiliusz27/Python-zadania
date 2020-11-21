@@ -128,25 +128,35 @@ while kontynuuj:
         file.close()
 
         font = pygame.font.Font(None, 74)
-        text = font.render("Max wynik: ", 1, BIALY)
-        screen.blit(text, (230, 190))
+        text = font.render("Koniec gry", 1, (255, 0, 0))
+        screen.blit(text, (220, 140))
 
         if scoreA > wynik:
             file = open("wynik.txt", "w")
             file.write(str(scoreA))
             wynik = scoreA
             file.close()
-
-        font = pygame.font.Font(None, 74)
-        text = font.render(str(wynik), 1, BIALY)
-        screen.blit(text, (540, 190))
+            font = pygame.font.Font(None, 74)
+            text = font.render("Nowy rekord! ", 1, (0, 255, 0))
+            screen.blit(text, (200, 210))
+            font = pygame.font.Font(None, 74)
+            text = font.render("Max wynik: ", 1, BIALY)
+            screen.blit(text, (200, 280))
+            font = pygame.font.Font(None, 74)
+            text = font.render(str(wynik), 1, BIALY)
+            screen.blit(text, (490, 280))
+        else:
+            font = pygame.font.Font(None, 74)
+            text = font.render("Max wynik: ", 1, BIALY)
+            screen.blit(text, (200, 210))
+            font = pygame.font.Font(None, 74)
+            text = font.render(str(wynik), 1, (255, 255, 0))
+            screen.blit(text, (490, 210))
 
         all_sprites_list.remove(pileczka)
-        font = pygame.font.Font(None, 74)
-        text = font.render("Koniec gry", 1, (255, 0, 0))
-        screen.blit(text, (220, 240))
         pygame.display.flip()
         sys.exit()
+
     if pileczka.rect.y <= 0:
         pileczka.velocity[1] = -pileczka.velocity[1]
 
@@ -166,8 +176,11 @@ while kontynuuj:
 
     # wyświetlanie wyników
     font = pygame.font.Font(None, 74)
-    text = font.render(str(scoreA), 1, BIALY)
-    screen.blit(text, (330, 10))
+    text = font.render(str(scoreA), 1, (0, 255, 255))
+    if scoreA >= 10:
+        screen.blit(text, (310, 10))
+    else:
+        screen.blit(text, (330, 10))
 
     # odświeżenie / przerysowanie całego ekranu
     pygame.display.flip()
@@ -177,3 +190,4 @@ while kontynuuj:
 
 # koniec
 pygame.quit()
+sys.exit()
