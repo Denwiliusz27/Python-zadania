@@ -60,7 +60,7 @@ def main():
             speed = [speed[0] + time * accel[0], speed[1]]
 
         ball_x += speed[0]
-        ball_y += speed[1] + 1/2 *(g * time)
+        ball_y += speed[1] + 1/2 * (g * time)
         speed[1] += g
 
         ballrect = ball.get_rect(center=(ball_x, ball_y))
