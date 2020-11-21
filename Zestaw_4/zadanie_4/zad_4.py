@@ -11,30 +11,23 @@ letters = {
 
 def roman2int(liczba):
     suma = 0
-    letter = 0
+    pos = len(liczba)-1
 
-    while letter < len(liczba):
-        print(letter, end=": ")
-        if letter < len(liczba)-1:
-            if letters[liczba[letter]] < letters[liczba[letter+1]]:
-                print(liczba[letter], " < ", liczba[letter+1])
-                suma -= letters[liczba[letter]] - letters[liczba[letter+1]]
-                letter += 1
-            elif letters[liczba[letter]] > letters[liczba[letter+1]]:
-                print(liczba[letter], " > ", liczba[letter+1])
-                suma += letters[liczba[letter+1]] + letters[liczba[letter]]
-                letter += 1
-            else:
-                print(liczba[letter], " = ", liczba[letter+1])
-                suma += letters[liczba[letter]]
+    while pos >= 0:
+        letter = liczba[pos]
+
+        if pos < len(liczba)-1:
+            if letters[letter] < letters[liczba[pos+1]]:
+                suma -= letters[letter]
+            elif letters[letter] >= letters[liczba[pos+1]]:
+                suma += letters[letter]
         else:
-            print("inny")
-            suma += letters[liczba[letter]]
-        letter += 1
-        print(suma)
+            suma += letters[letter]
+        pos -= 1
 
     return suma
 
 
 if __name__ == '__main__':
-    print(roman2int("DLXXI"))
+    liczba = "MMCCCLXXVII"
+    print(liczba," =", roman2int(liczba))
