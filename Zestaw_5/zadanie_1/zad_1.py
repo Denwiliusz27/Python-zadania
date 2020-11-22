@@ -6,7 +6,8 @@ class Bug:
         self.identyfikator = Bug.licznik
 
     def __del__(self):
-        print("KONIEC: ")
+        print("KONIEC: ", end=" ")
+        print(self)
         Bug.licznik -= 1
 
     def __str__(self):
@@ -15,13 +16,20 @@ class Bug:
 
 def main():
     bugs = []
-    for i in range(10):
+    for i in range(100):
         bugs.append(Bug())
         print(bugs[-1])
-        print("petla")
+    print("\n")
 
-    for i in range(10):
-        print(bugs[-1])
+    a = Bug()
+    b = Bug()
+    c = Bug()
+    print(a)
+    print(b)
+    print(c)
+    print("\n")
+
+
 
 
 if __name__ == '__main__':
