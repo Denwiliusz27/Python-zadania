@@ -136,27 +136,42 @@ while kontynuuj:
             file.write(str(scoreA))
             wynik = scoreA
             file.close()
-            font = pygame.font.Font(None, 74)
-            text = font.render("Nowy rekord! ", 1, (0, 255, 0))
-            screen.blit(text, (200, 210))
-            font = pygame.font.Font(None, 74)
-            text = font.render("Max wynik: ", 1, BIALY)
-            screen.blit(text, (200, 280))
-            font = pygame.font.Font(None, 74)
-            text = font.render(str(wynik), 1, BIALY)
-            screen.blit(text, (490, 280))
+            while True:
+                font = pygame.font.Font(None, 74)
+                text = font.render("Nowy rekord! ", 1, (0, 255, 0))
+                screen.blit(text, (200, 210))
+                font = pygame.font.Font(None, 74)
+                text = font.render("Max wynik: ", 1, BIALY)
+                screen.blit(text, (200, 280))
+                font = pygame.font.Font(None, 74)
+                text = font.render(str(wynik), 1, BIALY)
+                screen.blit(text, (490, 280))
+                pygame.display.flip()
+                print("petla pierwsza")
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:  # zamknięcie okienka
+                        print("klikam")
+                        kontynuuj = False
+                        exit()
         else:
-            font = pygame.font.Font(None, 74)
-            text = font.render("Max wynik: ", 1, BIALY)
-            screen.blit(text, (200, 210))
-            font = pygame.font.Font(None, 74)
-            text = font.render(str(wynik), 1, (255, 255, 0))
-            screen.blit(text, (490, 210))
+            while True:
+                font = pygame.font.Font(None, 74)
+                text = font.render("Max wynik: ", 1, BIALY)
+                screen.blit(text, (200, 210))
+                font = pygame.font.Font(None, 74)
+                text = font.render(str(wynik), 1, (255, 255, 0))
+                screen.blit(text, (490, 210))
+                pygame.display.flip()
+                print("petla druga")
 
-        all_sprites_list.remove(pileczka)
-        pygame.display.flip()
-        sys.exit()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:  # zamknięcie okienka
+                        print("klikam")
+                        kontynuuj = False
+                        exit()
 
+    print("po while")
     if pileczka.rect.y <= 0:
         pileczka.velocity[1] = -pileczka.velocity[1]
 
@@ -188,6 +203,8 @@ while kontynuuj:
     # 60 klatek na sekundę
     clock.tick(60)
 
+print("To koniec")
 # koniec
 pygame.quit()
 sys.exit()
+
