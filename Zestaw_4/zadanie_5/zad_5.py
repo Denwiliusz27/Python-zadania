@@ -10,7 +10,7 @@ def check_numbers(L, left, right):
 def reverse_iteratively(L: list, left: int, right: int):
     if not left < right:
         left, right = right, left
-        
+
     left, right = check_numbers(L, left, right)
 
     while left < right:

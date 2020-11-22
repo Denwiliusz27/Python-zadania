@@ -10,8 +10,8 @@ def main():
     icon = pygame.image.load("fifapyth.jpg")  # dodaje ikone w rogu okienka
     pygame.display.set_icon(icon)
 
-    #pygame.mixer.music.load("music.wav")  # dodaje muzyke
-    #pygame.mixer.music.play(-1)  # odtwarzanie w pętli
+    pygame.mixer.music.load("music.wav")  # dodaje muzyke
+    pygame.mixer.music.play(-1)  # odtwarzanie w pętli
 
     window_size = window_width, window_height = 1000, 700  # rozmiary okienka
     window = pygame.display.set_mode(window_size)  # utworzone okienko
