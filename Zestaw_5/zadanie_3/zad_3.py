@@ -56,7 +56,7 @@ class Pilka(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, color, [0, 0, width, height])
 
         # losowanie prędkości
-        self.velocity = [randint(-8, 0), randint(4, 8)]
+        self.velocity = [randint(-8, 8), randint(4, 8)]
 
         # pobieramy prostokąt (jego rozmiary) z obiektu image
         self.rect = self.image.get_rect()
@@ -106,7 +106,7 @@ while kontynuuj:
         if event.type == pygame.QUIT:  # zamknięcie okienka
             kontynuuj = False
 
-    # ruchy obiektów Rakietkas klawisze strzałka góra dół lub klawisz w s
+    # ruchy obiektów Rakietkas klawisze strzałka lewo prawo
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         rakietkaA.moveLeft(5)
@@ -116,8 +116,6 @@ while kontynuuj:
     # aktualizacja listy duszków
     all_sprites_list.update()
 
-    # sprawdzenie czy piłeczka nie uderza w którąś ścianę
-    # i odpowiednie naliczenie punktu jeśli minie rakietkę A lub B i uderzy w ścianę za nią
     if pileczka.rect.x > 690:
         pileczka.velocity[0] = -pileczka.velocity[0]
     if pileczka.rect.x < 0:
@@ -132,45 +130,41 @@ while kontynuuj:
         screen.blit(text, (220, 140))
 
         if scoreA > wynik:
+            print("petla")
             file = open("wynik.txt", "w")
             file.write(str(scoreA))
             wynik = scoreA
             file.close()
-            font = pygame.font.Font(None, 74)
-            text = font.render("Nowy rekord! ", 1, (0, 255, 0))
-            screen.blit(text, (200, 210))
-            font = pygame.font.Font(None, 74)
-            text = font.render("Max wynik: ", 1, BIALY)
-            screen.blit(text, (200, 280))
-            font = pygame.font.Font(None, 74)
-            text = font.render(str(wynik), 1, (255, 255, 0))
-            screen.blit(text, (490, 280))
-            pygame.display.flip()
-            print("petla pierwsza")
+            while True:
+                font = pygame.font.Font(None, 74)
+                text = font.render("Nowy rekord! ", 1, (0, 255, 0))
+                screen.blit(text, (200, 210))
+                font = pygame.font.Font(None, 74)
+                text = font.render("Max wynik: ", 1, BIALY)
+                screen.blit(text, (200, 280))
+                font = pygame.font.Font(None, 74)
+                text = font.render(str(wynik), 1, (255, 255, 0))
+                screen.blit(text, (490, 280))
+                pygame.display.flip()
         else:
-            font = pygame.font.Font(None, 74)
-            text = font.render("Max wynik: ", 1, BIALY)
-            screen.blit(text, (200, 210))
-            font = pygame.font.Font(None, 74)
-            text = font.render(str(wynik), 1, (255, 255, 0))
-            screen.blit(text, (490, 210))
-            pygame.display.flip()
-            print("petla druga")
-
-        pygame.display.flip()
-        kontynuuj = False
-        pygame.quit()
-
+            while True:
+                font = pygame.font.Font(None, 74)
+                text = font.render("Max wynik: ", 1, BIALY)
+                screen.blit(text, (200, 210))
+                font = pygame.font.Font(None, 74)
+                text = font.render(str(wynik), 1, (255, 255, 0))
+                screen.blit(text, (490, 210))
+                pygame.display.flip()
     if pileczka.rect.y <= 0:
         pileczka.velocity[1] = -pileczka.velocity[1]
 
-    # sprawdzenie kolizji piłeczki z obiektem rakietkaA
+        # sprawdzenie kolizji piłeczki z obiektem rakietkaA
     if pygame.sprite.collide_mask(pileczka, rakietkaA):
         scoreA += 1
         pileczka.bounce()
 
-    # RYSOWANIE
-    # czarny ekran
+        # RYSOWANIE
+        # czarny ekran
     screen.fill(CZARNY)
     # cienka linia przez środek boiska
     # pygame.draw.line(screen, BIALY, [0, 249], [699, 249], 5)
@@ -190,10 +184,13 @@ while kontynuuj:
     pygame.display.flip()
 
     # 60 klatek na sekundę
+
+
+    # sprawdzenie czy piłeczka nie uderza w którąś ścianę
+    # i odpowiednie naliczenie punktu jeśli minie rakietkę A i uderzy w ścianę pod nią
+
     clock.tick(60)
 
 print("To koniec")
 # koniec
-pygame.quit()
-sys.exit()
 
