@@ -146,6 +146,10 @@ while kontynuuj:
                 text = font.render(str(wynik), 1, (255, 255, 0))
                 screen.blit(text, (490, 280))
                 pygame.display.flip()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:  # zamknięcie okienka
+                        pygame.quit()
         else:
             while True:
                 font = pygame.font.Font(None, 74)
@@ -155,6 +159,10 @@ while kontynuuj:
                 text = font.render(str(wynik), 1, (255, 255, 0))
                 screen.blit(text, (490, 210))
                 pygame.display.flip()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:  # zamknięcie okienka
+                        pygame.quit()
     if pileczka.rect.y <= 0:
         pileczka.velocity[1] = -pileczka.velocity[1]
 
