@@ -70,135 +70,138 @@ class Pilka(pygame.sprite.Sprite):
         self.velocity[0] = randint(-8, 8)
 
 
-# definiujemy rozmiary i otwieramy nowe okno
-size = (700, 500)
-screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Ping Pong")
+def main():
+    # definiujemy rozmiary i otwieramy nowe okno
+    size = (700, 500)
+    screen = pygame.display.set_mode(size)
+    pygame.display.set_caption("Ping Pong")
 
-rakietkaA = Rakietka(BIALY, 100, 10)
-rakietkaA.rect.x = 300
-rakietkaA.rect.y = 470
+    rakietkaA = Rakietka(BIALY, 100, 10)
+    rakietkaA.rect.x = 300
+    rakietkaA.rect.y = 470
 
-pileczka = Pilka(BIALY, 10, 10)
-pileczka.rect.x = randint(0, 690)
-pileczka.rect.y = randint(0, 150)
+    pileczka = Pilka(BIALY, 10, 10)
+    pileczka.rect.x = randint(0, 690)
+    pileczka.rect.y = randint(0, 150)
 
-# lista wszystkich widzalnych obiektów potomnych z klasy Sprite
-all_sprites_list = pygame.sprite.Group()
+    # lista wszystkich widzalnych obiektów potomnych z klasy Sprite
+    all_sprites_list = pygame.sprite.Group()
 
-# dodanie obu rakietek i piłeczki do listy
-all_sprites_list.add(rakietkaA)
-all_sprites_list.add(pileczka)
+    # dodanie obu rakietek i piłeczki do listy
+    all_sprites_list.add(rakietkaA)
+    all_sprites_list.add(pileczka)
 
-# zaczynamy właściwy blok programu
-kontynuuj = True
+    # zaczynamy właściwy blok programu
+    kontynuuj = True
 
-# służy do kontroli liczby klatek na sekudnę (fps)
-clock = pygame.time.Clock()
+    # służy do kontroli liczby klatek na sekudnę (fps)
+    clock = pygame.time.Clock()
 
-# Początkowe wyniki graczy
-scoreA = 0
+    # Początkowe wyniki graczy
+    scoreA = 0
 
-# -------- GLÓWNA PĘTLA PROGRAMU -----------
-while kontynuuj:
+    # -------- GLÓWNA PĘTLA PROGRAMU -----------
+    while kontynuuj:
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:  # zamknięcie okienka
-            kontynuuj = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # zamknięcie okienka
+                kontynuuj = False
 
-    # ruchy obiektów Rakietkas klawisze strzałka lewo prawo
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        rakietkaA.moveLeft(5)
-    if keys[pygame.K_RIGHT]:
-        rakietkaA.moveRight(5)
+        # ruchy obiektów Rakietkas klawisze strzałka lewo prawo
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            rakietkaA.moveLeft(5)
+        if keys[pygame.K_RIGHT]:
+            rakietkaA.moveRight(5)
 
-    # aktualizacja listy duszków
-    all_sprites_list.update()
+        # aktualizacja listy duszków
+        all_sprites_list.update()
 
-    if pileczka.rect.x > 690:
-        pileczka.velocity[0] = -pileczka.velocity[0]
-    if pileczka.rect.x < 0:
-        pileczka.velocity[0] = -pileczka.velocity[0]
-    if pileczka.rect.y >= 490:
-        file = open("wynik.txt", "r")
-        wynik = int(file.read())
-        file.close()
-
-        font = pygame.font.Font(None, 74)
-        text = font.render("Koniec gry", 1, (255, 0, 0))
-        screen.blit(text, (220, 140))
-
-        if scoreA > wynik:
-            print("petla")
-            file = open("wynik.txt", "w")
-            file.write(str(scoreA))
-            wynik = scoreA
+        if pileczka.rect.x > 690:
+            pileczka.velocity[0] = -pileczka.velocity[0]
+        if pileczka.rect.x < 0:
+            pileczka.velocity[0] = -pileczka.velocity[0]
+        if pileczka.rect.y >= 490:
+            file = open("wynik.txt", "r")
+            wynik = int(file.read())
             file.close()
-            while True:
-                font = pygame.font.Font(None, 74)
-                text = font.render("Nowy rekord! ", 1, (0, 255, 0))
-                screen.blit(text, (200, 210))
-                font = pygame.font.Font(None, 74)
-                text = font.render("Max wynik: ", 1, BIALY)
-                screen.blit(text, (200, 280))
-                font = pygame.font.Font(None, 74)
-                text = font.render(str(wynik), 1, (255, 255, 0))
-                screen.blit(text, (490, 280))
-                pygame.display.flip()
 
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:  # zamknięcie okienka
-                        pygame.quit()
+            font = pygame.font.Font(None, 74)
+            text = font.render("Koniec gry", 1, (255, 0, 0))
+            screen.blit(text, (220, 140))
+
+            if scoreA > wynik:
+                print("petla")
+                file = open("wynik.txt", "w")
+                file.write(str(scoreA))
+                wynik = scoreA
+                file.close()
+                while True:
+                    font = pygame.font.Font(None, 74)
+                    text = font.render("Nowy rekord! ", 1, (0, 255, 0))
+                    screen.blit(text, (200, 210))
+                    font = pygame.font.Font(None, 74)
+                    text = font.render("Max wynik: ", 1, BIALY)
+                    screen.blit(text, (200, 280))
+                    font = pygame.font.Font(None, 74)
+                    text = font.render(str(wynik), 1, (255, 255, 0))
+                    screen.blit(text, (490, 280))
+                    pygame.display.flip()
+
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:  # zamknięcie okienka
+                            pygame.quit()
+            else:
+                while True:
+                    font = pygame.font.Font(None, 74)
+                    text = font.render("Max wynik: ", 1, BIALY)
+                    screen.blit(text, (200, 210))
+                    font = pygame.font.Font(None, 74)
+                    text = font.render(str(wynik), 1, (255, 255, 0))
+                    screen.blit(text, (490, 210))
+                    pygame.display.flip()
+
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:  # zamknięcie okienka
+                            pygame.quit()
+        if pileczka.rect.y <= 0:
+            pileczka.velocity[1] = -pileczka.velocity[1]
+
+            # sprawdzenie kolizji piłeczki z obiektem rakietkaA
+        if pygame.sprite.collide_mask(pileczka, rakietkaA):
+            scoreA += 1
+            pileczka.bounce()
+
+            # RYSOWANIE
+            # czarny ekran
+        screen.fill(CZARNY)
+        # cienka linia przez środek boiska
+        # pygame.draw.line(screen, BIALY, [0, 249], [699, 249], 5)
+
+        # narysowanie obiektów
+        all_sprites_list.draw(screen)
+
+        # wyświetlanie wyników
+        font = pygame.font.Font(None, 74)
+        text = font.render(str(scoreA), 1, (0, 255, 255))
+        if scoreA >= 10:
+            screen.blit(text, (310, 10))
         else:
-            while True:
-                font = pygame.font.Font(None, 74)
-                text = font.render("Max wynik: ", 1, BIALY)
-                screen.blit(text, (200, 210))
-                font = pygame.font.Font(None, 74)
-                text = font.render(str(wynik), 1, (255, 255, 0))
-                screen.blit(text, (490, 210))
-                pygame.display.flip()
+            screen.blit(text, (330, 10))
 
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:  # zamknięcie okienka
-                        pygame.quit()
-    if pileczka.rect.y <= 0:
-        pileczka.velocity[1] = -pileczka.velocity[1]
+        # odświeżenie / przerysowanie całego ekranu
+        pygame.display.flip()
 
-        # sprawdzenie kolizji piłeczki z obiektem rakietkaA
-    if pygame.sprite.collide_mask(pileczka, rakietkaA):
-        scoreA += 1
-        pileczka.bounce()
+        # 60 klatek na sekundę
 
-        # RYSOWANIE
-        # czarny ekran
-    screen.fill(CZARNY)
-    # cienka linia przez środek boiska
-    # pygame.draw.line(screen, BIALY, [0, 249], [699, 249], 5)
+        # sprawdzenie czy piłeczka nie uderza w którąś ścianę
+        # i odpowiednie naliczenie punktu jeśli minie rakietkę A i uderzy w ścianę pod nią
 
-    # narysowanie obiektów
-    all_sprites_list.draw(screen)
-
-    # wyświetlanie wyników
-    font = pygame.font.Font(None, 74)
-    text = font.render(str(scoreA), 1, (0, 255, 255))
-    if scoreA >= 10:
-        screen.blit(text, (310, 10))
-    else:
-        screen.blit(text, (330, 10))
-
-    # odświeżenie / przerysowanie całego ekranu
-    pygame.display.flip()
-
-    # 60 klatek na sekundę
+        clock.tick(60)
 
 
-    # sprawdzenie czy piłeczka nie uderza w którąś ścianę
-    # i odpowiednie naliczenie punktu jeśli minie rakietkę A i uderzy w ścianę pod nią
-
-    clock.tick(60)
-
-print("To koniec")
-# koniec
-
+if __name__ == '__main__':
+    main()
+    print("To koniec")
+    sys.exit()
+    # koniec
