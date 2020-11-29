@@ -1,5 +1,6 @@
 import unittest
 
+
 class Point:
     """Klasa reprezentująca punkty na płaszczyźnie."""
 
@@ -47,7 +48,11 @@ class Point:
 class TestPoint(unittest.TestCase):
     def setUp(self): pass
 
-    def test_print(self): pass
+    def test_print(self):
+        self.assertEqual(Point(2, 3).__str__(), "(2, 3)")
+        self.assertNotEqual(Point(2, 3).__str__(), "(3, 2)")
+        self.assertEqual(Point(2, 3).__repr__(), "Point(2, 3)")
+        self.assertNotEqual(Point(2, 3).__repr__(), "Point(3, 2)")
 
     def test_cmp(self):
         self.assertTrue(Point(2, 3) == Point(2, 3))
@@ -74,6 +79,10 @@ class TestPoint(unittest.TestCase):
     def test_length(self):
         self.assertEqual(Point(2, 3).length(), 13)
         self.assertNotEqual(Point(2, 3).length(), 5)
+
+    def test_hash(self):
+        p = Point(2, 3)
+        self.assertEqual(p.__hash__(), hash(p))
 
 
 if __name__ == '__main__':
