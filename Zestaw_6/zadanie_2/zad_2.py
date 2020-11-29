@@ -38,31 +38,31 @@ class Frac:
 
     def __add__(self, other):  # frac1 + frac2
         # return self.x/self.y + other.x/other.y
-        if self.y != other.y:
-            x = self.x * other.y + other.x * self.y
-            y = self.y * other.y
+        x = self.x * other.y + other.x * self.y
+        y = self.y * other.y
 
-            dzielnik = 1
-            for i in range(x + 1, 0, -1):
-                if x % i == 0 and y % i == 0:
-                    dzielnik = i
-                    break
+        return uproszczenie(x, y)
 
-            return Frac(x / dzielnik, y / dzielnik)
-        else:
-            return Frac(self.x + other.x, self.y)
+    def __sub__(self, other):  # frac1 - frac2
+        x = self.x * other.y - other.x * self.y
+        y = self.y * other.y
 
-    def __sub__(self, other):
-        pass  # frac1 - frac2
+        return uproszczenie(x, y)
 
-    def __mul__(self, other):
-        pass  # frac1 * frac2
+    def __mul__(self, other):  # frac1 * frac2
+        x = self.x * other.x
+        y = self.y * other.y
 
-    def __div__(self, other):
-        pass  # frac1 / frac2, Python 2
+        return uproszczenie(x, y)
 
-    def __truediv__(self, other):
-        pass  # frac1 / frac2, Python 3
+    def __div__(self, other):  # frac1 / frac2, Python 2
+        pass
+
+    def __truediv__(self, other): # frac1 / frac2, Python 3
+        x = self.x * other.y
+        y = self.y * other.x
+
+        return uproszczenie(x, y)
 
     def __floordiv__(self, other):
         pass  # frac1 // frac2, opcjonalnie
@@ -80,12 +80,26 @@ class Frac:
     def __invert__(self):  # odwrotnosc: ~frac
         return Frac(self.y, self.x)
 
-    def __float__(self):
-        pass  # float(frac)
+    def __float__(self):  # float(frac)
+        return self.x / self.y
 
     def __hash__(self):
         return hash(float(self))  # immutable fracs
         # assert set([2]) == set([2.0])
+
+
+def uproszczenie(x, y):
+    dzielnik = 1
+
+    if x > y:
+        zakres = y + 1
+    else:
+        zakres = x + 1
+    for i in range(zakres, 1, -1):
+        if x % i == 0 and y % i == 0:
+            dzielnik = i
+            break
+    return Frac(x / dzielnik, y / dzielnik)
 
 
 # Kod testujący moduł.
@@ -99,7 +113,7 @@ def fun(x1, y1, x2, y2):
     y = y1 * y2
 
     dzielnik = 1
-    for i in range(x + 1, 0, -1):
+    for i in range(x + 1, 1, -1):
         print("sprawdzam ", i)
         if x % i == 0 and y % i == 0:
             dzielnik = i
@@ -109,8 +123,8 @@ def fun(x1, y1, x2, y2):
 
 
 if __name__ == '__main__':
-    u1 = Frac(7, 36)
-    u2 = Frac(8, 36)
+    u1 = Frac(3, 7)
+    u2 = Frac(1, 3)
     print(u1.x / u1.y)
     print(u2.x / u2.y)
     print(u1 == u2)
