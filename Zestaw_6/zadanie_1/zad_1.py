@@ -48,6 +48,8 @@ class Point:
 class TestPoint(unittest.TestCase):
     def setUp(self): pass
 
+# czy robić dla floatów assertAlmostEqual(Point(2.34, 4.65) ...)
+
     def test_print(self):
         self.assertEqual(Point(2, 3).__str__(), "(2, 3)")
         self.assertNotEqual(Point(2, 3).__str__(), "(3, 2)")
