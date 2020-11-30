@@ -38,14 +38,22 @@ class Frac:
 
     def __add__(self, other):  # frac1 + frac2
         # return self.x/self.y + other.x/other.y
-        x = self.x * other.y + other.x * self.y
-        y = self.y * other.y
+        if self.y == other.y:
+            x = self.x * other.y + other.x * self.y
+            y = self.y * other.y
+        else:
+            x = self.x + other.x
+            y = self.y
 
         return uproszczenie(x, y)
 
     def __sub__(self, other):  # frac1 - frac2
-        x = self.x * other.y - other.x * self.y
-        y = self.y * other.y
+        if self.y == other.y:
+            x = self.x * other.y - other.x * self.y
+            y = self.y * other.y
+        else:
+            x = self.x - other.x
+            y = self.y
 
         return uproszczenie(x, y)
 
@@ -58,14 +66,23 @@ class Frac:
     def __div__(self, other):  # frac1 / frac2, Python 2
         pass
 
-    def __truediv__(self, other): # frac1 / frac2, Python 3
+    def __truediv__(self, other):  # frac1 / frac2, Python 3
         x = self.x * other.y
         y = self.y * other.x
 
         return uproszczenie(x, y)
 
-    def __floordiv__(self, other):
-        pass  # frac1 // frac2, opcjonalnie
+    def __floordiv__(self, other):  # frac1 // frac2, opcjonalnie
+        frac = self / other
+
+        if frac.x < frac.y:
+            return Frac(0, 1)
+        elif frac.x == frac.y:
+            return Frac(1, 1)
+        else:  # x > y
+            while frac.x % frac.y != 0:
+                frac.x -= 1
+            return uproszczenie(frac.x, frac.y)
 
     def __mod__(self, other):
         pass  # frac1 % frac2, opcjonalnie
@@ -88,39 +105,12 @@ class Frac:
         # assert set([2]) == set([2.0])
 
 
-def uproszczenie(x, y):
-    dzielnik = 1
-
-    if x > y:
-        zakres = y + 1
-    else:
-        zakres = x + 1
-    for i in range(zakres, 1, -1):
-        if x % i == 0 and y % i == 0:
-            dzielnik = i
-            break
-    return Frac(x / dzielnik, y / dzielnik)
-
 
 # Kod testujący moduł.
 
 # import unittest
 
 # class TestFrac(unittest.TestCase): pass
-
-def fun(x1, y1, x2, y2):
-    x = x1 * y2 + x2 * y1
-    y = y1 * y2
-
-    dzielnik = 1
-    for i in range(x + 1, 1, -1):
-        print("sprawdzam ", i)
-        if x % i == 0 and y % i == 0:
-            dzielnik = i
-            break
-
-    print(x / dzielnik, "/", y / dzielnik)
-
 
 if __name__ == '__main__':
     u1 = Frac(3, 7)
@@ -129,3 +119,4 @@ if __name__ == '__main__':
     print(u2.x / u2.y)
     print(u1 == u2)
     print(u1 + u2)
+    print(4 // 6)
