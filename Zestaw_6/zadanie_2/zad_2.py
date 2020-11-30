@@ -105,6 +105,19 @@ class Frac:
         # assert set([2]) == set([2.0])
 
 
+def uproszczenie(x, y):
+    dzielnik = 1
+
+    if x > y:
+        zakres = y + 1
+    else:
+        zakres = x + 1
+    for i in range(zakres, 1, -1):
+        if x % i == 0 and y % i == 0:
+            dzielnik = i
+            break
+    return Frac(x / dzielnik, y / dzielnik)
+
 
 # Kod testujący moduł.
 
