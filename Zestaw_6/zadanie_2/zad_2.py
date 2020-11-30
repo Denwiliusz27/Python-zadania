@@ -11,6 +11,8 @@ class Frac:
             raise ZeroDivisionError
 
     def __str__(self):  # zwraca "x/y" lub "x" dla y=1
+        if self.y == 1:
+            return "{}".format(int(self.x))
         return "{}/{}".format(int(self.x), int(self.y))
 
     def __repr__(self):  # zwraca "Frac(x, y)"
@@ -30,7 +32,7 @@ class Frac:
 
         return x1 == x2
 
-#        return self.x / self.y == other.x / other.y
+    #        return self.x / self.y == other.x / other.y
 
     def __ne__(self, other):
         x1 = self.x
@@ -66,8 +68,8 @@ class Frac:
         return x1 <= x2
         # return self.x / self.y <= other.x / other.y
 
-   # def __gt__(self, other):
-      #  x1 = self.x
+    # def __gt__(self, other):
+    #  x1 = self.x
     #         x2 = other.x
     #
     #         if self.y != other.y:
@@ -76,8 +78,8 @@ class Frac:
     #
     #         return x1 > x2
 
-   # def __ge__(self, other):
-      #  x1 = self.x
+    # def __ge__(self, other):
+    #  x1 = self.x
     #         x2 = other.x
     #
     #         if self.y != other.y:
@@ -170,22 +172,87 @@ def uproszczenie(x, y):
 
 
 # Kod testujący moduł.
-"""
+
 class TestFrac(unittest.TestCase):
 
-    def setUp(self): pass
+    def setUp(self):
+        self.f1 = Frac(3, 6)
+        self.f2 = Frac(5, 17)
+        self.f3 = Frac(2, 1)
+        self.f4 = Frac(4, 4)
+
+    def test_init(self):
+        self.assertEqual(self.f1.x, 3)
+        self.assertEqual(self.f1.y, 6)
+
+        self.assertEqual(self.f2.x, 5)
+        self.assertEqual(self.f2.y, 17)
+
+        self.assertEqual(self.f3.x, 2)
+        self.assertEqual(self.f3.y, 1)
+
+        self.assertEqual(self.f4.x, 4)
+        self.assertEqual(self.f4.y, 4)
 
     def test_print(self):
-        self.assertEqual(Frac(1, 3).__str__(), "1/3")
-        self.assertNotEqual(Frac(1, 3).__str__(), "3/1")
-        self.assertEqual(Frac(1, 3).__repr__(), "Frac(1, 3)")
-        self.assertNotEqual(Frac(1, 3).__repr__(), "Frac(3, 1)")
+        self.assertEqual(self.f1.__str__(), "3/6")
+        self.assertNotEqual(self.f1.__str__(), "4/7")
+        self.assertEqual(self.f1.__repr__(), "Frac(3, 6)")
+        self.assertNotEqual(self.f1.__repr__(), "Frac(6, 3)")
 
-"""
+        self.assertEqual(self.f2.__str__(), "5/17")
+        self.assertNotEqual(self.f2.__str__(), "17/5")
+        self.assertEqual(self.f2.__repr__(), "Frac(5, 17)")
+        self.assertNotEqual(self.f2.__repr__(), "Frac(17, 5)")
+
+        self.assertEqual(self.f3.__str__(), "2")
+        self.assertNotEqual(self.f3.__str__(), "2/1")
+        self.assertEqual(self.f3.__repr__(), "Frac(2, 1)")
+        self.assertNotEqual(self.f3.__repr__(), "Frac(2, 4)")
+
+        self.assertEqual(self.f4.__str__(), "4/4")
+        self.assertNotEqual(self.f4.__str__(), "5/1")
+        self.assertEqual(self.f4.__repr__(), "Frac(4, 4)")
+        self.assertNotEqual(self.f4.__repr__(), "Frac(3, 2)")
+
+    def test_eq(self):
+        self.assertTrue(self.f1 == Frac(3, 6))
+        self.assertTrue(self.f1 == Frac(1, 2))
+        self.assertFalse(self.f1 == Frac(6, 3))
+
+        self.assertTrue(self.f2 == Frac(5, 17))
+        self.assertTrue(self.f2 == Frac(10, 34))
+        self.assertFalse(self.f2 == Frac(17, 5))
+
+        self.assertTrue(self.f3 == Frac(2, 1))
+        self.assertTrue(self.f3 == Frac(4, 2))
+        self.assertFalse(self.f3 == Frac(1, 2))
+
+        self.assertTrue(self.f4 == Frac(4, 4))
+        self.assertTrue(self.f4 == Frac(3, 3))
+        self.assertFalse(self.f4 == Frac(2, 1))
+
+    def test_ne(self):
+        self.assertFalse(self.f1 != Frac(3, 6))
+        self.assertFalse(self.f1 != Frac(1, 2))
+        self.assertTrue(self.f1 != Frac(6, 3))
+
+        self.assertFalse(self.f2 != Frac(5, 17))
+        self.assertFalse(self.f2 != Frac(10, 34))
+        self.assertTrue(self.f2 != Frac(17, 5))
+
+        self.assertFalse(self.f3 != Frac(2, 1))
+        self.assertFalse(self.f3 != Frac(4, 2))
+        self.assertTrue(self.f3 != Frac(1, 2))
+
+        self.assertFalse(self.f4 != Frac(4, 4))
+        self.assertFalse(self.f4 != Frac(3, 3))
+        self.assertTrue(self.f4 != Frac(2, 1))
+
 
 if __name__ == '__main__':
-    # unittest.main()
-    f1 = Frac(3, 4)
+    unittest.main()
+    """  f1 = Frac(3, 4)
     f2 = Frac(6, 8)
     print(Frac(2, 4) + Frac(8, 4))
     # print(Frac(3, 0))
@@ -196,3 +263,4 @@ if __name__ == '__main__':
     print(f1 == f2)
     print(f1 > f2)
     print(f1 >= f2)
+"""
