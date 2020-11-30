@@ -46,7 +46,7 @@ class Frac:
 
         # return self.x / self.y != other.x / other.y
 
-    def __lt__(self, other):
+    def __lt__(self, other):  # <
         x1 = self.x
         x2 = other.x
 
@@ -55,9 +55,8 @@ class Frac:
             x2 = other.x * self.y
 
         return x1 < x2
-        # return self.x / self.y < other.x / other.y
 
-    def __le__(self, other):
+    def __le__(self, other):  # <=
         x1 = self.x
         x2 = other.x
 
@@ -66,7 +65,6 @@ class Frac:
             x2 = other.x * self.y
 
         return x1 <= x2
-        # return self.x / self.y <= other.x / other.y
 
     # def __gt__(self, other):
     #  x1 = self.x
@@ -180,6 +178,7 @@ class TestFrac(unittest.TestCase):
         self.f2 = Frac(5, 17)
         self.f3 = Frac(2, 1)
         self.f4 = Frac(4, 4)
+        self.f5 = Frac(0, 3)
 
     def test_init(self):
         self.assertEqual(self.f1.x, 3)
@@ -193,6 +192,9 @@ class TestFrac(unittest.TestCase):
 
         self.assertEqual(self.f4.x, 4)
         self.assertEqual(self.f4.y, 4)
+
+        self.assertEqual(self.f5.x, 0)
+        self.assertEqual(self.f5.y, 3)
 
     def test_print(self):
         self.assertEqual(self.f1.__str__(), "3/6")
@@ -215,6 +217,11 @@ class TestFrac(unittest.TestCase):
         self.assertEqual(self.f4.__repr__(), "Frac(4, 4)")
         self.assertNotEqual(self.f4.__repr__(), "Frac(3, 2)")
 
+        self.assertEqual(self.f5.__str__(), "0/3")
+        self.assertNotEqual(self.f5.__str__(), "1/3")
+        self.assertEqual(self.f5.__repr__(), "Frac(0, 3)")
+        self.assertNotEqual(self.f5.__repr__(), "Frac(1, 3)")
+
     def test_eq(self):
         self.assertTrue(self.f1 == Frac(3, 6))
         self.assertTrue(self.f1 == Frac(1, 2))
@@ -232,6 +239,10 @@ class TestFrac(unittest.TestCase):
         self.assertTrue(self.f4 == Frac(3, 3))
         self.assertFalse(self.f4 == Frac(2, 1))
 
+        self.assertTrue(self.f5 == Frac(0, 3))
+        self.assertTrue(self.f5 == Frac(0, 7))
+        self.assertFalse(self.f5 == Frac(1, 3))
+
     def test_ne(self):
         self.assertFalse(self.f1 != Frac(3, 6))
         self.assertFalse(self.f1 != Frac(1, 2))
@@ -248,6 +259,109 @@ class TestFrac(unittest.TestCase):
         self.assertFalse(self.f4 != Frac(4, 4))
         self.assertFalse(self.f4 != Frac(3, 3))
         self.assertTrue(self.f4 != Frac(2, 1))
+
+        self.assertFalse(self.f5 != Frac(0, 3))
+        self.assertTrue(self.f5 != Frac(1, 3))
+
+    def test_lt(self):
+        self.assertTrue(self.f1 < Frac(4, 6))
+        self.assertFalse(self.f1 < Frac(1, 2))
+        self.assertFalse(self.f1 < Frac(3, 6))
+        self.assertFalse(self.f1 < Frac(2, 7))
+
+        self.assertTrue(self.f2 < Frac(6, 17))
+        self.assertFalse(self.f2 < Frac(5, 17))
+        self.assertFalse(self.f2 < Frac(10, 34))
+
+        self.assertTrue(self.f3 < Frac(3, 1))
+        self.assertFalse(self.f3 < Frac(1, 1))
+
+        self.assertTrue(self.f4 < Frac(5, 4))
+        self.assertFalse(self.f4 < Frac(1, 1))
+        self.assertFalse(self.f4 < Frac(3, 4))
+
+        self.assertTrue(self.f5 < Frac(1, 2))
+        self.assertFalse(self.f5 < Frac(0, 2))
+
+    def test_le(self):
+        self.assertTrue(self.f1 <= Frac(3, 6))
+        self.assertTrue(self.f1 <= Frac(4, 6))
+        self.assertTrue(self.f1 <= Frac(6, 12))
+        self.assertFalse(self.f1 <= Frac(2, 6))
+
+        self.assertTrue(self.f2 <= Frac(5, 17))
+        self.assertTrue(self.f2 <= Frac(6, 17))
+        self.assertTrue(self.f2 <= Frac(10, 34))
+        self.assertFalse(self.f2 <= Frac(4, 17))
+
+        self.assertTrue(self.f3 <= Frac(2, 1))
+        self.assertTrue(self.f3 <= Frac(3, 1))
+        self.assertTrue(self.f3 <= Frac(5, 2))
+        self.assertFalse(self.f3 <= Frac(2, 2))
+
+        self.assertTrue(self.f4 <= Frac(4, 4))
+        self.assertTrue(self.f4 <= Frac(1, 1))
+        self.assertTrue(self.f4 <= Frac(5, 4))
+        self.assertFalse(self.f4 <= Frac(1, 3))
+
+        self.assertTrue(self.f5 <= Frac(0, 3))
+        self.assertTrue(self.f5 <= Frac(0, 1))
+        self.assertTrue(self.f5 <= Frac(3, 8))
+        self.assertFalse(self.f5 <= Frac(-1, 2))
+
+    def test_gt(self):
+        self.assertTrue(self.f1 > Frac(2, 6))
+        self.assertFalse(self.f1 > Frac(1, 2))
+        self.assertFalse(self.f1 > Frac(3, 6))
+        self.assertFalse(self.f1 > Frac(6, 12))
+
+        self.assertTrue(self.f2 > Frac(4, 17))
+        self.assertFalse(self.f2 > Frac(5, 17))
+        self.assertFalse(self.f2 > Frac(10, 34))
+
+        self.assertTrue(self.f3 > Frac(1, 1))
+        self.assertFalse(self.f3 > Frac(3, 1))
+
+        self.assertTrue(self.f4 > Frac(3, 4))
+        self.assertFalse(self.f4 > Frac(1, 1))
+        self.assertFalse(self.f4 > Frac(5, 4))
+
+        self.assertTrue(self.f5 > Frac(-1, 2))
+        self.assertFalse(self.f5 > Frac(0, 2))
+        self.assertFalse(self.f5 > Frac(0, 6))
+
+    def test_ge(self):
+        self.assertTrue(self.f1 >= Frac(3, 6))
+        self.assertTrue(self.f1 >= Frac(2, 6))
+        self.assertTrue(self.f1 >= Frac(6, 12))
+        self.assertFalse(self.f1 >= Frac(4, 6))
+
+        self.assertTrue(self.f2 >= Frac(5, 17))
+        self.assertTrue(self.f2 >= Frac(4, 17))
+        self.assertTrue(self.f2 >= Frac(10, 34))
+        self.assertFalse(self.f2 >= Frac(6, 17))
+
+        self.assertTrue(self.f3 >= Frac(2, 1))
+        self.assertTrue(self.f3 >= Frac(2, 2))
+        self.assertTrue(self.f3 >= Frac(1, 1))
+        self.assertFalse(self.f3 >= Frac(3, 1))
+
+        self.assertTrue(self.f4 >= Frac(4, 4))
+        self.assertTrue(self.f4 >= Frac(1, 1))
+        self.assertTrue(self.f4 >= Frac(3, 4))
+        self.assertFalse(self.f4 >= Frac(5, 4))
+
+        self.assertTrue(self.f5 >= Frac(0, 3))
+        self.assertTrue(self.f5 >= Frac(0, 1))
+        self.assertTrue(self.f5 >= Frac(-1, 2))
+        self.assertFalse(self.f5 >= Frac(3, 8))
+
+    def test_add(self):
+        self.assertEqual(self.f1 + )
+
+
+    def test_hash(self):
+        self.assertEqual(self.f1.__hash__(), hash(3/6))
 
 
 if __name__ == '__main__':
