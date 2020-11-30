@@ -1,67 +1,121 @@
+import unittest, math
+
+
 class Frac:
     """Klasa reprezentująca ułamek."""
 
     def __init__(self, x=0, y=1):
         self.x = x
         self.y = y
+        if self.y == 0:
+            raise ZeroDivisionError
 
     def __str__(self):  # zwraca "x/y" lub "x" dla y=1
-        if self.y == 1:
-            return "{}".format(self.y)
-        else:
-            return "{}/{}".format(self.x, self.y)
+        return "{}/{}".format(int(self.x), int(self.y))
 
     def __repr__(self):  # zwraca "Frac(x, y)"
-        return "Frac({}, {})".format(self.x, self.y)
+        return "Frac({}, {})".format(int(self.x), int(self.y))
 
     # Python 2
     # def __cmp__(self, other): pass  # cmp(frac1, frac2)
 
     # Python 2.7 i Python 3
     def __eq__(self, other):
-        return self.x / self.y == other.x / other.y
+        x1 = self.x
+        x2 = other.x
+
+        if self.y != other.y:
+            x1 = self.x * other.y
+            x2 = other.x * self.y
+
+        return x1 == x2
+
+#        return self.x / self.y == other.x / other.y
 
     def __ne__(self, other):
-        return not (self.x / self.y == other.x / other.y)
+        x1 = self.x
+        x2 = other.x
+
+        if self.y != other.y:
+            x1 = self.x * other.y
+            x2 = other.x * self.y
+
+        return x1 != x2
+
+        # return self.x / self.y != other.x / other.y
 
     def __lt__(self, other):
-        return self.x / self.y < other.x / other.y
+        x1 = self.x
+        x2 = other.x
+
+        if self.y != other.y:
+            x1 = self.x * other.y
+            x2 = other.x * self.y
+
+        return x1 < x2
+        # return self.x / self.y < other.x / other.y
 
     def __le__(self, other):
-        return self.x / self.y <= other.x / other.y
+        x1 = self.x
+        x2 = other.x
 
-    def __gt__(self, other):
-        return self.x / self.y > other.x / other.y
+        if self.y != other.y:
+            x1 = self.x * other.y
+            x2 = other.x * self.y
 
-    def __ge__(self, other):
-        return self.x / self.y >= other.x / other.y
+        return x1 <= x2
+        # return self.x / self.y <= other.x / other.y
+
+   # def __gt__(self, other):
+      #  x1 = self.x
+    #         x2 = other.x
+    #
+    #         if self.y != other.y:
+    #             x1 = self.x * other.y
+    #             x2 = other.x * self.y
+    #
+    #         return x1 > x2
+
+   # def __ge__(self, other):
+      #  x1 = self.x
+    #         x2 = other.x
+    #
+    #         if self.y != other.y:
+    #             x1 = self.x * other.y
+    #             x2 = other.x * self.y
+    #
+    #         return x1 >= x2
 
     def __add__(self, other):  # frac1 + frac2
-        # return self.x/self.y + other.x/other.y
-        if self.y == other.y:
+        if self.y != other.y:
             x = self.x * other.y + other.x * self.y
             y = self.y * other.y
         else:
             x = self.x + other.x
             y = self.y
 
-        return uproszczenie(x, y)
+        nwd = math.gcd(x, y)
+        return Frac(x / nwd, y / nwd)
+
+    # return uproszczenie(x, y)
 
     def __sub__(self, other):  # frac1 - frac2
-        if self.y == other.y:
+        if self.y != other.y:
             x = self.x * other.y - other.x * self.y
             y = self.y * other.y
         else:
             x = self.x - other.x
             y = self.y
 
-        return uproszczenie(x, y)
+        nwd = math.gcd(x, y)
+        return Frac(x / nwd, y / nwd)
 
     def __mul__(self, other):  # frac1 * frac2
         x = self.x * other.x
         y = self.y * other.y
 
-        return uproszczenie(x, y)
+        nwd = math.gcd(x, y)
+        return Frac(x / nwd, y / nwd)
 
     def __div__(self, other):  # frac1 / frac2, Python 2
         pass
@@ -70,22 +124,18 @@ class Frac:
         x = self.x * other.y
         y = self.y * other.x
 
-        return uproszczenie(x, y)
+        nwd = math.gcd(x, y)
+        return Frac(x / nwd, y / nwd)
 
     def __floordiv__(self, other):  # frac1 // frac2, opcjonalnie
         frac = self / other
+        x = frac.x // frac.y
+        y = 1
+        return Frac(x, 1)
 
-        if frac.x < frac.y:
-            return Frac(0, 1)
-        elif frac.x == frac.y:
-            return Frac(1, 1)
-        else:  # x > y
-            while frac.x % frac.y != 0:
-                frac.x -= 1
-            return uproszczenie(frac.x, frac.y)
-
-    def __mod__(self, other):
-        pass  # frac1 % frac2, opcjonalnie
+    def __mod__(self, other):  # frac1 % frac2, opcjonalnie
+        liczba = self / other
+        return int(liczba.x % liczba.y)
 
     # operatory jednoargumentowe
     def __pos__(self):  # +frac = (+1)*frac
@@ -120,16 +170,29 @@ def uproszczenie(x, y):
 
 
 # Kod testujący moduł.
+"""
+class TestFrac(unittest.TestCase):
 
-# import unittest
+    def setUp(self): pass
 
-# class TestFrac(unittest.TestCase): pass
+    def test_print(self):
+        self.assertEqual(Frac(1, 3).__str__(), "1/3")
+        self.assertNotEqual(Frac(1, 3).__str__(), "3/1")
+        self.assertEqual(Frac(1, 3).__repr__(), "Frac(1, 3)")
+        self.assertNotEqual(Frac(1, 3).__repr__(), "Frac(3, 1)")
+
+"""
 
 if __name__ == '__main__':
-    u1 = Frac(3, 7)
-    u2 = Frac(1, 3)
-    print(u1.x / u1.y)
-    print(u2.x / u2.y)
-    print(u1 == u2)
-    print(u1 + u2)
-    print(4 // 6)
+    # unittest.main()
+    f1 = Frac(3, 4)
+    f2 = Frac(6, 8)
+    print(Frac(2, 4) + Frac(8, 4))
+    # print(Frac(3, 0))
+    print(f1 / f2)
+    print("#####")
+    print(f1 // f2)
+    print(f1 % f2)
+    print(f1 == f2)
+    print(f1 > f2)
+    print(f1 >= f2)
