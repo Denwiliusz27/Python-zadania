@@ -7,8 +7,7 @@ class Frac:
     def __init__(self, x=0, y=1):
         self.x = x
         self.y = y
-        if self.y == 0:
-            raise ZeroDivisionError
+
 
     def __str__(self):  # zwraca "x/y" lub "x" dla y=1
         if self.y == 1:
@@ -131,7 +130,7 @@ class Frac:
         frac = self / other
         x = frac.x // frac.y
         y = 1
-        return Frac(x, 1)
+        return int(x)
 
     def __mod__(self, other):  # frac1 % frac2, opcjonalnie
         liczba = self / other
@@ -399,6 +398,109 @@ class TestFrac(unittest.TestCase):
         self.assertEqual(self.f5 - Frac(4, 3), Frac(-4, 3))
         self.assertEqual(self.f5 - Frac(2, 6), Frac(-1, 3))
         self.assertNotEqual(self.f5 - Frac(2, 6), Frac(1, 7))
+
+    def test_mul(self):
+        self.assertEqual(self.f1 * Frac(2, 5), Frac(1, 5))
+
+        self.assertEqual(self.f2 * Frac(3, 4), Frac(15, 68))
+
+        self.assertEqual(self.f3 * Frac(3, 8), Frac(3, 4))
+
+        self.assertEqual(self.f4 * Frac(3, 7), Frac(3, 7))
+
+        self.assertEqual(self.f5 * Frac(4, 5), Frac(0, 2))
+
+    def test_truediv(self):
+        self.assertEqual(self.f1 / Frac(2, 7), Frac(7, 4))
+
+        self.assertEqual(self.f2 / Frac(3, 4), Frac(20, 51))
+
+        self.assertEqual(self.f3 / Frac(3, 5), Frac(10, 3))
+
+        self.assertEqual(self.f4 / Frac(2, 5), Frac(5, 2))
+
+        self.assertEqual(self.f5 / Frac(3, 4), Frac(0, 2))
+
+    def test_floordiv(self):
+        self.assertEqual(self.f1 // Frac(2, 7), 1)
+
+        self.assertEqual(self.f2 // Frac(3, 4), 0)
+
+        self.assertEqual(self.f3 // Frac(3, 5), 3)
+
+        self.assertEqual(self.f4 // Frac(2, 5), 2)
+
+        self.assertEqual(self.f5 // Frac(3, 4), 0)
+        
+    def test_mood(self):
+        self.assertEqual(self.f1 % Frac(2, 7), 3)
+
+        self.assertEqual(self.f2 % Frac(3, 4), 20)
+
+        self.assertEqual(self.f3 % Frac(3, 5), 1)
+
+        self.assertEqual(self.f4 % Frac(2, 5), 1)
+
+        self.assertEqual(self.f5 % Frac(3, 4), 0)
+
+    def test_pos(self):
+        self.assertEqual(self.f1, Frac(6, 12))
+        self.assertNotEqual(self.f1, Frac(-3, 6))
+
+        self.assertEqual(self.f2, Frac(5, 17))
+        self.assertNotEqual(self.f2, Frac(-5, 17))
+
+        self.assertEqual(self.f3, Frac(2, 1))
+        self.assertNotEqual(self.f3, Frac(-2, 1))
+
+        self.assertEqual(self.f4, Frac(1, 1))
+        self.assertNotEqual(self.f4, Frac(-1, 1))
+
+        self.assertEqual(self.f5, Frac(0, 3))
+        self.assertEqual(self.f5, Frac(-0, 3))
+
+    def test_neg(self):
+        self.assertEqual(-self.f1, Frac(-6, 12))
+        self.assertNotEqual(-self.f1, Frac(3, 6))
+
+        self.assertEqual(-self.f2, Frac(-5, 17))
+        self.assertNotEqual(-self.f2, Frac(5, 17))
+
+        self.assertEqual(-self.f3, Frac(-2, 1))
+        self.assertNotEqual(-self.f3, Frac(2, 1))
+
+        self.assertEqual(-self.f4, Frac(-1, 1))
+        self.assertNotEqual(-self.f4, Frac(1, 1))
+
+        self.assertEqual(-self.f5, Frac(0, 3))
+        self.assertEqual(-self.f5, Frac(-0, 3))
+
+    def test_invert(self):
+        self.assertEqual(~self.f1, Frac(6, 3))
+        self.assertNotEqual(~self.f1, Frac(3, 6))
+
+        self.assertEqual(~self.f2, Frac(17, 5))
+        self.assertNotEqual(~self.f2, Frac(5, 17))
+
+        self.assertEqual(~self.f3, Frac(1, 2))
+        self.assertNotEqual(~self.f3, Frac(2, 1))
+
+        self.assertEqual(~self.f4, Frac(4, 4))
+        self.assertNotEqual(~self.f4, Frac(-1, 1))
+
+        self.assertEqual(~self.f5, Frac(3, 0))
+        self.assertNotEqual(~self.f5, Frac(0, 3))
+
+    def test_float(self):
+        self.assertEqual(float(self.f1), 0.5)
+
+        self.assertEqual(float(self.f2), 0.29411764705882354)
+
+        self.assertEqual(float(self.f3), 2.0)
+
+        self.assertEqual(float(self.f4), 1.0)
+
+        self.assertEqual(float(self.f5), 0.0)
 
     def test_hash(self):
         self.assertEqual(self.f1.__hash__(), hash(3 / 6))
