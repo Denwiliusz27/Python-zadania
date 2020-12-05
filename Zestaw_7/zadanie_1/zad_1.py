@@ -128,10 +128,23 @@ class TestRectangle(unittest.TestCase):
 
     def test_cover(self):
         self.assertEqual(self.r.cover(self.r1), Rectangle(1, 1, 6, 6))
-        self.assertEqual(self.r.cover(self.r2), Rectangle())
+        self.assertEqual(self.r.cover(self.r2), Rectangle(1, 1, 7, 6))
+        self.assertEqual(self.r.cover(self.r3), Rectangle(1, 1, 7, 5))
+        self.assertEqual(self.r.cover(self.r4), Rectangle(1, -1, 7, 5))
+        self.assertEqual(self.r.cover(self.r5), Rectangle(1, -1, 6, 5))
+        self.assertEqual(self.r.cover(self.r6), Rectangle(0, -1, 6, 5))
+        self.assertEqual(self.r.cover(self.r7), Rectangle(-1, 1, 6, 5))
+        self.assertEqual(self.r.cover(self.r8), Rectangle(1, 1, 6, 5))
+        self.assertEqual(self.r.cover(self.r9), Rectangle(0, 0, 7, 8))
+        self.assertEqual(self.r.cover(self.r10), Rectangle(0, 1, 7, 5))
+        self.assertEqual(self.r.cover(self.r11), Rectangle(1, -1, 6, 7))
 
-    def test_move(self): pass
+    def test_make4(self):
+        self.assertEqual(self.r.make4(), (Rectangle(1, 1, 3.5, 3), Rectangle(3.5, 3, 6, 5),
+                                          Rectangle(1, 3, 3.5, 5), Rectangle(3.5, 1, 6, 3)))
 
+    def test_move(self):
+        self.assertEqual(self.r.move(3, -2), Rectangle(4, -1, 9, 3))
 
 
 if __name__ == '__main__':
