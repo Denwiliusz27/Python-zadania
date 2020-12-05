@@ -8,7 +8,6 @@ class Frac:
         self.x = x
         self.y = y
 
-
     def __str__(self):  # zwraca "x/y" lub "x" dla y=1
         if self.y == 1:
             return "{}".format(int(self.x))
@@ -441,7 +440,7 @@ class TestFrac(unittest.TestCase):
         self.assertEqual(self.f4 // Frac(2, 5), 2)
 
         self.assertEqual(self.f5 // Frac(3, 4), 0)
-        
+
     def test_mood(self):
         self.assertEqual(self.f1 % Frac(2, 7), 3)
 
