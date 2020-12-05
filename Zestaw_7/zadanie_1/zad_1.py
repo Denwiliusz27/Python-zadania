@@ -1,4 +1,5 @@
 from points import Point
+import unittest
 
 
 class Rectangle:
@@ -16,7 +17,7 @@ class Rectangle:
         return "[{0}, {1}]".format(self.pt1, self.pt2)
 
     def __repr__(self):  # "Rectangle(x1, y1, x2, y2)"
-        return "Rectanngle({0}, {1}, {2}, {3})".format(self.pt1.x, self.pt1.y, self.pt2.x, self.pt2.y)
+        return "Rectangle({0}, {1}, {2}, {3})".format(self.pt1.x, self.pt1.y, self.pt2.x, self.pt2.y)
 
     def __eq__(self, other):  # obsługa rect1 == rect2
         return self.pt1 == other.pt1 and self.pt2 == other.pt2
@@ -65,14 +66,78 @@ class Rectangle:
 
         return r1, r2, r3, r4
 
+
 # Kod testujący moduł.
 
-import unittest
+class TestRectangle(unittest.TestCase):
+    def test_correct_input(self):
+        try:
+            rec = Rectangle(4, 2, 6, 5)
+        except ValueError:
+            self.fail()
 
-# class TestRectangle(unittest.TestCase): pass
+    def test_wrong_input(self):
+        self.assertRaises(ValueError, Rectangle, 2, 1, 1, 5)
+        self.assertRaises(ValueError, Rectangle, 2, 4, 3, 2)
+
+    def setUp(self):
+        self.r = Rectangle(1, 1, 6, 5)
+        self.r1 = Rectangle(2, 3, 4, 6)  # gora
+        self.r2 = Rectangle(4, 2, 7, 6)  # prawy gorny
+        self.r3 = Rectangle(4, 1, 7, 3)  # prawo
+        self.r4 = Rectangle(5, -1, 7, 2)  # prawy dolny
+        self.r5 = Rectangle(2, -1, 4, 4)  # dol
+        self.r6 = Rectangle(0, -1, 2, 2)  # lewy dolny
+        self.r7 = Rectangle(-1, 2, 2, 5)  # lewy
+        self.r8 = Rectangle(2, 2, 4, 5)  # wewnarz
+        self.r9 = Rectangle(0, 0, 7, 8)  # zewewnarz
+        self.r10 = Rectangle(0, 2, 7, 5)  # przez boki
+        self.r11 = Rectangle(2, -1, 4, 7)  # przez podstawy
+
+    def test_print(self):
+        self.assertEqual(self.r.__str__(), "[(1, 1), (6, 5)]")
+        self.assertEqual(self.r.__repr__(), "Rectangle(1, 1, 6, 5)")
+
+    def test_cmp(self):
+        self.assertTrue(self.r == Rectangle(1, 1, 6, 5))
+        self.assertFalse(self.r == Rectangle(1, 1, 5, 6))
+
+        self.assertTrue(self.r != self.r1)
+        self.assertFalse(self.r2 != Rectangle(4, 2, 7, 6))
+
+    def test_center(self):
+        self.assertEqual(self.r.center(), Point(3.5, 3))
+        self.assertEqual(self.r1.center(), Point(3, 4.5))
+
+    def test_area(self):
+        self.assertEqual(self.r.area(), 20)
+        self.assertEqual(self.r1.area(), 6)
+
+    def test_intersection(self):
+        self.assertEqual(self.r.intersection(self.r1), 4)
+        self.assertEqual(self.r.intersection(self.r2), 6)
+        self.assertEqual(self.r.intersection(self.r3), 4)
+        self.assertEqual(self.r.intersection(self.r4), 1)
+        self.assertEqual(self.r.intersection(self.r5), 6)
+        self.assertEqual(self.r.intersection(self.r6), 1)
+        self.assertEqual(self.r.intersection(self.r7), 3)
+        self.assertEqual(self.r.intersection(self.r8), 6)
+        self.assertEqual(self.r.intersection(self.r9), 20)
+        self.assertEqual(self.r.intersection(self.r10), 15)
+        self.assertEqual(self.r.intersection(self.r11), 8)
+
+    def test_cover(self):
+        self.assertEqual(self.r.cover(self.r1), Rectangle(1, 1, 6, 6))
+        self.assertEqual(self.r.cover(self.r2), Rectangle())
+
+    def test_move(self): pass
+
+
 
 if __name__ == '__main__':
-    try:
+    unittest.main()
+
+"""    try:
         rec1 = Rectangle(1, 1, 4, 5)
     except ValueError:
         print("valuerror 1")
@@ -103,7 +168,7 @@ if __name__ == '__main__':
     print(rec1.make4())
 
 
-"""  try:
+  try:
         rec2 = Rectangle(3, 3, 1, 1)
     except ValueError:
         print("valuerror 2")
