@@ -90,7 +90,7 @@ class TestRectangle(unittest.TestCase):
         self.r6 = Rectangle(0, -1, 2, 2)  # lewy dolny
         self.r7 = Rectangle(-1, 2, 2, 5)  # lewy
         self.r8 = Rectangle(2, 2, 4, 5)  # wewnarz
-        self.r9 = Rectangle(0, 0, 7, 8)  # zewewnarz
+        self.r9 = Rectangle(0, 0, 7, 8)  # zewnatrz
         self.r10 = Rectangle(0, 2, 7, 5)  # przez boki
         self.r11 = Rectangle(2, -1, 4, 7)  # przez podstawy
 
@@ -102,7 +102,7 @@ class TestRectangle(unittest.TestCase):
         self.assertTrue(self.r == Rectangle(1, 1, 6, 5))
         self.assertFalse(self.r == Rectangle(1, 1, 5, 6))
 
-        self.assertTrue(self.r != self.r1)
+        self.assertTrue(self.r != Rectangle(2, 2, 4, 5))
         self.assertFalse(self.r2 != Rectangle(4, 2, 7, 6))
 
     def test_center(self):
@@ -149,6 +149,8 @@ class TestRectangle(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
 
 """    try:
         rec1 = Rectangle(1, 1, 4, 5)
