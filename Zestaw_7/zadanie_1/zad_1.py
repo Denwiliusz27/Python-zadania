@@ -94,6 +94,10 @@ class TestRectangle(unittest.TestCase):
         self.r10 = Rectangle(0, 2, 7, 5)  # przez boki
         self.r11 = Rectangle(2, -1, 4, 7)  # przez podstawy
 
+    def test_init(self):
+        self.assertEqual(self.r.pt1, Point(1, 1))
+        self.assertEqual(self.r.pt2, Point(6, 5))
+
     def test_print(self):
         self.assertEqual(self.r.__str__(), "[(1, 1), (6, 5)]")
         self.assertEqual(self.r.__repr__(), "Rectangle(1, 1, 6, 5)")
@@ -149,48 +153,3 @@ class TestRectangle(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-"""    try:
-        rec1 = Rectangle(1, 1, 4, 5)
-    except ValueError:
-        print("valuerror 1")
-    finally:
-        print("zrobilem")
-
-    try:
-        rec2 = Rectangle(1, 1, 3, 4)
-    except ValueError:
-        print("valuerror 2")
-    finally:
-        print("zrobilem")
-
-    print(rec1)
-    print(rec2)
-    print(rec1.__repr__())
-    print(rec2.__repr__())
-    print(rec1 == rec2)
-    print(rec1 != rec2)
-    print(rec1.center())
-    print(rec1.area())
-    print("#####cz_wspolna######")
-    rec3 = Rectangle(1, 1, 3, 3)
-    print(rec1.intersection(rec3))
-    print("#####cz_wspolna######")
-    print(rec1.cover(rec3))
-    print(rec1.move(3, -2))
-    print(rec1.make4())
-
-
-  try:
-        rec2 = Rectangle(3, 3, 1, 1)
-    except ValueError:
-        print("valuerror 2")
-
-    try:
-        rec3 = Rectangle(1, 2, 8, 6)
-        print("zrobilem 2")
-    except ValueError:
-        print("valuerror 3")
-"""
