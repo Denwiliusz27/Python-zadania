@@ -1,6 +1,6 @@
+from points import Point
 from math import pi, sqrt
 import unittest
-from points import Point
 
 
 class Circle:
@@ -50,9 +50,70 @@ class Circle:
 class TestCircle(unittest.TestCase):
     def test_correct_input(self):
         try:
-            rec = Circle(1, )
+            circle = Circle(1, 3, 4)
         except ValueError:
             self.fail()
+
+    def test_wrong_input(self):
+        self.assertRaises(ValueError, Circle, 0, 3, -3)
+
+    def setUp(self):
+        self.c = Circle(1, 3, 4)
+        self.c1 = Circle(1, 3, 2)
+
+        self.c1_r = Circle(2, 3, 1.5)  # od prawej
+        self.c2_r = Circle(2, 3, 3)
+        self.c3_r = Circle(4, 3, 2)
+        self.c4_r = Circle(5, 3, 3)
+        self.c5_r = Circle(7, 3, 2)
+        self.c6_r = Circle(7, 3, 4)
+        self.c7_r = Circle(8, 3, 2)
+
+        self.c1_g = Circle(1, 4, 1.5)  # od gory
+        self.c2_g = Circle(1, 4, 3)
+        self.c3_g = Circle(1, 6, 2)
+        self.c4_g = Circle(1, 7, 3)
+        self.c5_g = Circle(1, 9, 2)
+        self.c6_g = Circle(1, 9, 4)
+        self.c7_g = Circle(1, 10, 2)
+
+    def test_init(self):
+        self.assertEqual(self.c.pt, Point(1, 3))
+        self.assertEqual(self.c.radius, 4)
+
+    def test_repr(self):
+        self.assertEqual(self.c.__repr__(), "Circle(1, 3, 4)")
+
+    def test_cmp(self):
+        self.assertTrue(self.c == Circle(1, 3, 4))
+        self.assertFalse(self.c == Circle(3, 1, 4))
+
+        self.assertTrue(self.c != Circle(3, 1, 4))
+        self.assertFalse(self.c != Circle(1, 3, 4))
+
+    def test_area(self):
+        self.assertEqual(self.c.area(), 16 * pi)
+        self.assertEqual(Circle(2, -2, 3).area(), 9 * pi)
+        self.assertEqual(Circle(-1, 2, 3).area(), 9 * pi)
+        self.assertEqual(Circle(-3, -2, 3).area(), 9 * pi)
+        self.assertEqual(Circle(0, 0, 3).area(), 9 * pi)
+        self.assertEqual(Circle(3, 4, 0).area(), 0)
+
+    def test_move(self):
+        self.assertEqual(Circle(1, 3, 4).move(2, 0), Circle(3, 3, 4))
+        self.assertEqual(Circle(1, 3, 4).move(2, 1), Circle(3, 4, 4))
+        self.assertEqual(Circle(1, 3, 4).move(0, 3), Circle(1, 6, 4))
+        self.assertEqual(Circle(1, 3, 4).move(2, -2), Circle(3, 1, 4))
+        self.assertEqual(Circle(1, 3, 4).move(0, -1), Circle(1, 2, 4))
+        self.assertEqual(Circle(1, 3, 4).move(-1, 0), Circle(0, 3, 4))
+        self.assertEqual(Circle(1, 3, 4).move(-1, 2), Circle(0, 5, 4))
+        self.assertEqual(Circle(1, 3, 4).move(-2, 0), Circle(-1, 3, 4))
+        self.assertEqual(Circle(1, 3, 4).move(-2, -1), Circle(-1, 2, 4))
+
+    def test_cover(self):
+        self.assertEqual(self.c.cover(self.c1), Circle(1, 3, 4))
+
+
 
 
 if __name__ == '__main__':
