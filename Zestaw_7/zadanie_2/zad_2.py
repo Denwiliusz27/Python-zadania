@@ -77,6 +77,22 @@ class TestCircle(unittest.TestCase):
         self.c6_g = Circle(1, 9, 4)
         self.c7_g = Circle(1, 10, 2)
 
+        self.c1_d = Circle(1, 2, 2)  # od dolu
+        self.c2_d = Circle(1, 1, 2)
+        self.c3_d = Circle(1, 0, 3)
+        self.c4_d = Circle(1, -1, 2)
+        self.c5_d = Circle(1, -3, 3)
+        self.c6_d = Circle(1, -3, 2)
+        self.c7_d = Circle(1, -4, 2)
+
+        self.c1_l = Circle(0, 3, 1.5)
+        self.c2_l = Circle(0, 3, 3)
+        self.c3_l = Circle(-2, 3, 2)
+        self.c4_l = Circle(-3, 3, 3)
+        self.c5_l = Circle(-5, 3, 2)
+        self.c6_l = Circle(-5, 3, 4)
+        self.c7_l = Circle(-6, 3, 2)
+
     def test_init(self):
         self.assertEqual(self.c.pt, Point(1, 3))
         self.assertEqual(self.c.radius, 4)
@@ -94,9 +110,9 @@ class TestCircle(unittest.TestCase):
     def test_area(self):
         self.assertEqual(self.c.area(), 16 * pi)
         self.assertEqual(Circle(2, -2, 3).area(), 9 * pi)
-        self.assertEqual(Circle(-1, 2, 3).area(), 9 * pi)
-        self.assertEqual(Circle(-3, -2, 3).area(), 9 * pi)
-        self.assertEqual(Circle(0, 0, 3).area(), 9 * pi)
+        self.assertEqual(Circle(-1, 2, 5).area(), 25 * pi)
+        self.assertEqual(Circle(-3, -2, 1).area(), pi)
+        self.assertEqual(Circle(0, 0, 2).area(), 4 * pi)
         self.assertEqual(Circle(3, 4, 0).area(), 0)
 
     def test_move(self):
@@ -112,19 +128,42 @@ class TestCircle(unittest.TestCase):
 
     def test_cover(self):
         self.assertEqual(self.c.cover(self.c1), Circle(1, 3, 4))
+        self.assertEqual(self.c1.cover(self.c), Circle(1, 3, 4))
 
+        self.assertEqual(self.c.cover(self.c1_r), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c2_r), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c3_r), Circle(1.5, 3, 4.5))
+        self.assertEqual(self.c.cover(self.c4_r), Circle(2.5, 3, 5.5))
+        self.assertEqual(self.c.cover(self.c5_r), Circle(3, 3, 6))
+        self.assertEqual(self.c.cover(self.c6_r), Circle(4, 3, 7))
+        self.assertEqual(self.c.cover(self.c7_r), Circle(3.5, 3, 6.5))
 
+        self.assertEqual(self.c.cover(self.c1_g), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c2_g), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c3_g), Circle(1, 3.5, 4.5))
+        self.assertEqual(self.c.cover(self.c4_g), Circle(1, 4.5, 5.5))
+        self.assertEqual(self.c.cover(self.c5_g), Circle(1, 5, 6))
+        self.assertEqual(self.c.cover(self.c6_g), Circle(1, 6, 7))
+        self.assertEqual(self.c.cover(self.c7_g), Circle(1, 5.5, 6.5))
+
+        self.assertEqual(self.c.cover(self.c1_d), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c2_d), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c3_d), Circle(1, 2, 5))
+        self.assertEqual(self.c.cover(self.c4_d), Circle(1, 2, 5))
+        self.assertEqual(self.c.cover(self.c5_d), Circle(1, 0.5, 6.5))
+        self.assertEqual(self.c.cover(self.c6_d), Circle(1, 1, 6))
+        self.assertEqual(self.c.cover(self.c7_d), Circle(1, 0.5, 6.5))
+
+        self.assertEqual(self.c.cover(self.c1_l), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c2_l), Circle(1, 3, 4))
+        self.assertEqual(self.c.cover(self.c3_l), Circle(0.5, 3, 4.5))
+        self.assertEqual(self.c.cover(self.c4_l), Circle(-0.5, 3, 5.5))
+        self.assertEqual(self.c.cover(self.c5_l), Circle(-1, 3, 6))
+        self.assertEqual(self.c.cover(self.c6_l), Circle(-2, 3, 7))
+        self.assertEqual(self.c.cover(self.c7_l), Circle(-1.5, 3, 6.5))
+
+        self.assertEqual(self.c3_d.cover(self.c3_l), Circle(-0.14644660940672583, 1.1464466094067258, 4.621320343559642))
 
 
 if __name__ == '__main__':
     unittest.main()
-
-"""    c = Circle(0, 0, 3)
-    c1 = Circle(4, 0, 2)
-
-    print(c.__repr__())
-    print(c.area())
-    print(c.cover(c1))
-    print(c1.cover(c))
-    print(c.cover(Circle(1,0,2)))
-"""
