@@ -1,3 +1,7 @@
+""" ZADANIE 7.5 (KLASA CIRCLE)
+W pliku circles.py zdefiniować klasę Circle wraz z potrzebnymi metodami. Okrąg jest określony przez podanie środka i
+promienia. Wykorzystać wyjątek ValueError do obsługi błędów. Napisać kod testujący moduł circles."""
+
 from points import Point
 from math import pi, sqrt
 import unittest
@@ -162,7 +166,8 @@ class TestCircle(unittest.TestCase):
         self.assertEqual(self.c.cover(self.c6_l), Circle(-2, 3, 7))
         self.assertEqual(self.c.cover(self.c7_l), Circle(-1.5, 3, 6.5))
 
-        self.assertEqual(self.c3_d.cover(self.c3_l), Circle(-0.14644660940672583, 1.1464466094067258, 4.621320343559642))
+        self.assertEqual(self.c3_d.cover(self.c3_l),
+                         Circle(-0.14644660940672583, 1.1464466094067258, 4.621320343559642))
 
 
 if __name__ == '__main__':

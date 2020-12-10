@@ -1,3 +1,7 @@
+"""ZADANIE 7.3 (KLASA RECTANGLE)
+W pliku rectangles.py zdefiniować klasę Rectangle wraz z potrzebnymi metodami. Wykorzystać wyjątek ValueError do obsługi
+błędów. Napisać kod testujący moduł rectangles."""
+
 from points import Point
 import unittest
 
