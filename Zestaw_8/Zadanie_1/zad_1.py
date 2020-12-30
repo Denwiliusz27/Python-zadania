@@ -32,6 +32,43 @@ def create_graph(tramwaje):
 
 
 def dijkstra(graph, a, b):
+    wierzcholki = dict()
+    for wierzcholek in graph.keys():
+        wierzcholki[wierzcholek] = []
+        if wierzcholek != a:
+            wierzcholki[wierzcholek].append(999)
+            wierzcholki[wierzcholek].append("")
+        else:
+            wierzcholki[wierzcholek].append(0)
+            wierzcholki[wierzcholek].append("")
+
+    w_nieodwiedzone = set(graph.keys())
+    minimum = wierzcholki[a][0]
+    w_min = a
+
+    while w_nieodwiedzone.__len__() > 0:
+        print("zostalo nieodwiedzonych: " + str(len(w_nieodwiedzone)))
+
+        minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
+        for w in w_nieodwiedzone:
+        #    print("Badam: " + w)
+            if wierzcholki[w][0] < minimum and wierzcholki[w][0] > 0:
+                minimum = wierzcholki[w][0]
+                print("bede usuwal " + w)
+                w_min = w
+        w_nieodwiedzone.remove(w_min)  # discard
+        print("minimum: " + str(minimum))
+
+        for k in graph[w_min]:
+            sasiad = k[0]
+
+            if wierzcholki[sasiad][0] > wierzcholki[w_min][0] + 1:
+                wierzcholki[sasiad][0] = wierzcholki[w_min][0] + 1
+                wierzcholki[sasiad][1] = w_min
+                print("Update: wierz[" + sasiad + "] = " + str(wierzcholki[sasiad][0]))
+        print("###############################################")
+
+'''
     print("A : " + a)
     wierzcholki = list(graph.keys())
     w_policzone = set()  # S
@@ -54,12 +91,15 @@ def dijkstra(graph, a, b):
         else:
             odl.append(0)
 
+    last_value = -1
+    minimum = 0
     while w_niepoliczone.__len__() > 0:
         print("#################################################")
         #print("ODLEGLOSCI: ")
         print("W_niepoliczone rozmiar = " + str(w_niepoliczone.__len__()))
         #print(odl)
-        minimum = min(odl)
+
+        #####
         print("minimum: " + str(minimum))
 
         for i in range(len(odl)):
@@ -86,14 +126,19 @@ def dijkstra(graph, a, b):
 
             if sasiad not in w_niepoliczone:
                 print("nie w niepolicz")
-                pass
+                break
             elif odl[indeks_sasiada] > odl[indeks] + 1:
                 odl[indeks_sasiada] = odl[indeks] + 1
                 poprzednik[indeks_sasiada] = indeks
                 print("aktualizuje odl" )
 
-    return odl
+        last_value = odl[0]
+        for i in odl:
+            if i < last_value and i > minimum:
+                minimum = i
 
+    return odl
+'''
 
 def main():
     with open('przystanki.json', "r", encoding='utf-8') as read_file:
