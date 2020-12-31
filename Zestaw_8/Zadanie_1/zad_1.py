@@ -77,7 +77,7 @@ def create_list_of_vertices(wierzcholki, a):
         else:
             w_nieodwiedzone.append(i)
 
-    return w_nieodwiedzone + help_list
+    return w_nieodwiedzone, help_list
 
 
 def dijkstra(graph, a, b):
@@ -122,19 +122,20 @@ def dijkstra(graph, a, b):
 def bellman_ford(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
     #w_nieodwiedzone = [a]
-    temp = a
     zmiana = False
     # print(graph[temp][0][0])
     # print(graph[temp])
 
-    w_nieodwiedzone = create_list_of_vertices(wierzcholki, a)
-    print(w_nieodwiedzone)
+    w_nieodwiedzone_1, w_nieodwiedzone_2 = create_list_of_vertices(wierzcholki, a)
+    print(w_nieodwiedzone_1)
+    temp = w_nieodwiedzone_1[0]
 
 
-"""
-    for i in range(len(wierzcholki)):
+    for i in range(len(w_nieodwiedzone_1)):
         print("Iter = " + str(i))
+        temp = w_nieodwiedzone_1[i]
         print("Temp: " + temp)
+
         for j in graph[temp]:
             sasiad = j[0]
             print("sasiad: " + sasiad)
@@ -142,19 +143,42 @@ def bellman_ford(graph, a, b):
             if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
                 wierzcholki[sasiad][1] = temp
-                print("zmienilem "+ sasiad+ " : " + str(wierzcholki[sasiad][0]))
-                #zmiana = True
+                print("zmienilem "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
+                zmiana = True
 
         #if zmiana == False:
-         #   break
+          #  break
 
         zmiana = False
-        #pos = len(graph[temp])-1
-        #print(pos)
-        #temp = graph[temp][pos][0]
-        print(temp)
+        #temp = w_nieodwiedzone_1[i+1]
+        #print(temp)
         print("############")
-"""
+
+    for i in range(len(w_nieodwiedzone_2)-1,0,-1):
+        print("Iter = " + str(i))
+        temp = w_nieodwiedzone_2[i]
+        print("Temp: " + temp)
+
+        for j in graph[temp]:
+            sasiad = j[0]
+            print("sasiad: " + sasiad)
+
+            if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
+                wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
+                wierzcholki[sasiad][1] = temp
+                print("zmienilem "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
+                zmiana = True
+
+        #if zmiana == False:
+          #  break
+
+        zmiana = False
+        #temp = w_nieodwiedzone_2[i+1]
+        #print(temp)
+        print("############")
+
+    print(wierzcholki)
+    print(wierzcholki[b][0])
 
 
 def main():
