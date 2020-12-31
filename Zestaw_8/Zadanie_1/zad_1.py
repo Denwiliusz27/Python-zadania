@@ -1,6 +1,19 @@
 import json, random
 
 
+def wyznacz_wierzcholki(graph, a):
+    wierzcholki = dict()
+    for wierzcholek in graph.keys():
+        wierzcholki[wierzcholek] = []
+        if wierzcholek != a:
+            wierzcholki[wierzcholek].append(999)
+        else:
+            wierzcholki[wierzcholek].append(0)
+        wierzcholki[wierzcholek].append("")
+
+    return wierzcholki
+
+
 def losowanie_przystankow(graph):
     wierzcholki = list(graph.keys())
     ilosc_p = len(wierzcholki)
@@ -45,15 +58,7 @@ def create_graph(tramwaje):
 
 
 def dijkstra(graph, a, b):
-    wierzcholki = dict()
-    for wierzcholek in graph.keys():
-        wierzcholki[wierzcholek] = []
-        if wierzcholek != a:
-            wierzcholki[wierzcholek].append(999)
-            wierzcholki[wierzcholek].append("")
-        else:
-            wierzcholki[wierzcholek].append(0)
-            wierzcholki[wierzcholek].append("")
+    wierzcholki = wyznacz_wierzcholki(graph, a)
 
     w_nieodwiedzone = set(graph.keys())
     minimum = wierzcholki[a][0]
@@ -91,6 +96,38 @@ def dijkstra(graph, a, b):
     return wierzcholki[b][0]
 
 
+def bellman_ford(graph, a, b):
+    wierzcholki = wyznacz_wierzcholki(graph, a)
+    temp = a
+    zmiana = False
+
+    #print(graph[temp][0][0])
+    print(graph[temp])
+
+    for i in range(len(wierzcholki)):
+        print("Iter = " + str(i))
+        print("Temp: " + temp)
+        for j in graph[temp]:
+            sasiad = j[0]
+            print("sasiad: " + sasiad)
+
+            if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
+                wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
+                wierzcholki[sasiad][1] = temp
+                print("zmienilem "+ sasiad+ " : " + str(wierzcholki[sasiad][0]))
+                #zmiana = True
+
+        #if zmiana == False:
+         #   break
+
+        zmiana = False
+        pos = len(graph[temp])-1
+        print(pos)
+        temp = graph[temp][pos][0]
+        print(temp)
+        print("############")
+
+
 def main():
     with open('przystanki.json', "r", encoding='utf-8') as read_file:
         przystanki = json.load(read_file)
@@ -102,13 +139,13 @@ def main():
 
     a, b = losowanie_przystankow(graph)
 
-    odleglosc = dijkstra(graph, a, b)
     print("#######################################")
-    print("Dijkstra = " + str(odleglosc))
+    odleglosc = dijkstra(graph, a, b)
 
+    print("\n#######################################")
+    bellman_ford(graph, a, b)
 
-# for i in graph.items():
-# print(i)
+    print("\nDijkstra = " + str(odleglosc))
 
 
 if __name__ == '__main__':
