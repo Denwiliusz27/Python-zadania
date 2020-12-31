@@ -77,17 +77,7 @@ def create_list_of_vertices(wierzcholki, a):
         else:
             w_nieodwiedzone.append(i)
 
-
-    cos = w_nieodwiedzone + help_list
-    print(len(cos))
-    #print("help: "+ len(help_list))
-
-    return cos
-    #print("pos_a = " + str(pos_a))
-    #print(help_list)
-    #print(len(help_list))
-
-
+    return w_nieodwiedzone + help_list
 
 
 def dijkstra(graph, a, b):
@@ -134,7 +124,6 @@ def bellman_ford(graph, a, b):
     #w_nieodwiedzone = [a]
     temp = a
     zmiana = False
-    pos_a = 0
     # print(graph[temp][0][0])
     # print(graph[temp])
 
