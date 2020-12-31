@@ -49,9 +49,11 @@ def dijkstra(graph, a, b):
     while w_nieodwiedzone.__len__() > 0:
         print("zostalo nieodwiedzonych: " + str(len(w_nieodwiedzone)))
 
-        minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
+        #minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
+        #w_min = list(w_nieodwiedzone)[0]
+        print("mam wierzcholek " + list(w_nieodwiedzone)[0])
         for w in w_nieodwiedzone:
-        #    print("Badam: " + w)
+            print("Badam: " + w + " : " + str(wierzcholki[w][0]))
             if wierzcholki[w][0] < minimum and wierzcholki[w][0] > 0:
                 minimum = wierzcholki[w][0]
                 print("bede usuwal " + w)
@@ -67,6 +69,14 @@ def dijkstra(graph, a, b):
                 wierzcholki[sasiad][1] = w_min
                 print("Update: wierz[" + sasiad + "] = " + str(wierzcholki[sasiad][0]))
         print("###############################################")
+        if w_nieodwiedzone.__len__() > 0:
+            minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
+            w_min = list(w_nieodwiedzone)[0]
+
+    #print(wierzcholki)
+    for i in wierzcholki.keys():
+        print(i + ": " + str(wierzcholki[i][0]) + ", " + wierzcholki[i][1])
+    return wierzcholki[b][0]
 
 '''
     print("A : " + a)
@@ -149,7 +159,7 @@ def main():
 
     graph = create_graph(tramwaje)
 
-    odleglosci = dijkstra(graph, "Korona", "Smolki")
+    odleglosci = dijkstra(graph, "Miodowa", "Uniwersytet Pedagogiczny")
     print("#######################################")
     print(odleglosci)
 
