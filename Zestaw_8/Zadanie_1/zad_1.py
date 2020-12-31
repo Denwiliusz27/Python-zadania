@@ -57,6 +57,39 @@ def create_graph(tramwaje):
     return graph
 
 
+def create_list_of_vertices(wierzcholki, a):
+    w_nieodwiedzone = [a]
+    pos_a = 0
+    help_list = list()
+    jest_a = False
+
+    for i in wierzcholki:
+        if i == a:
+            break
+        else:
+            help_list.append(i)
+        pos_a += 1
+
+    for i in wierzcholki:
+        if jest_a == False:
+            if i == a:
+                jest_a = True
+        else:
+            w_nieodwiedzone.append(i)
+
+
+    cos = w_nieodwiedzone + help_list
+    print(len(cos))
+    #print("help: "+ len(help_list))
+
+    return cos
+    #print("pos_a = " + str(pos_a))
+    #print(help_list)
+    #print(len(help_list))
+
+
+
+
 def dijkstra(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
 
@@ -98,21 +131,16 @@ def dijkstra(graph, a, b):
 
 def bellman_ford(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
-    w_nieodwiedzone = [a]
+    #w_nieodwiedzone = [a]
     temp = a
     zmiana = False
-
+    pos_a = 0
     # print(graph[temp][0][0])
     # print(graph[temp])
-    l = 0
-    for i in wierzcholki:
-        if i == a:
-            pos = l
-            break
-        l += 1
 
-    for i in range(l, len(wierzcholki), 1):
-        w_nieodwiedzone.append(wierz)
+    w_nieodwiedzone = create_list_of_vertices(wierzcholki, a)
+    print(w_nieodwiedzone)
+
 
 """
     for i in range(len(wierzcholki)):
