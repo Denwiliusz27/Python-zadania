@@ -60,19 +60,11 @@ def dijkstra(graph, a, b):
     w_min = a
 
     while w_nieodwiedzone.__len__() > 0:
-        # print("zostalo nieodwiedzonych: " + str(len(w_nieodwiedzone)))
-
-        # minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
-        # w_min = list(w_nieodwiedzone)[0]
-        # print("mam wierzcholek " + list(w_nieodwiedzone)[0])
         for w in w_nieodwiedzone:
-            # print("Badam: " + w + " : " + str(wierzcholki[w][0]))
-            if wierzcholki[w][0] < minimum and wierzcholki[w][0] > 0:
+            if minimum > wierzcholki[w][0] > 0:
                 minimum = wierzcholki[w][0]
-                # print("bede usuwal " + w)
                 w_min = w
-        w_nieodwiedzone.remove(w_min)  # discard
-        # print("minimum: " + str(minimum))
+        w_nieodwiedzone.remove(w_min)
 
         for k in graph[w_min]:
             sasiad = k[0]
@@ -80,8 +72,7 @@ def dijkstra(graph, a, b):
             if wierzcholki[sasiad][0] > wierzcholki[w_min][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[w_min][0] + 1
                 wierzcholki[sasiad][1] = w_min
-                # print("Update: wierz[" + sasiad + "] = " + str(wierzcholki[sasiad][0]))
-        # print("###############################################")
+
         if w_nieodwiedzone.__len__() > 0:
             minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
             w_min = list(w_nieodwiedzone)[0]
@@ -92,10 +83,10 @@ def dijkstra(graph, a, b):
         sciezka.append(wierzcholki[temp][1])
         temp = wierzcholki[temp][1]
 
-    print("SCIEZKA: " + a + " --> " + b + " = " + str(wierzcholki[b][0]))
-    for j in range(len(sciezka) - 1, -1, -1):
+    print(a + " --> " + b + " = " + str(wierzcholki[b][0]))
+    for j in range(len(sciezka)-1, 0, -1):
         print(sciezka[j], end=" -> ")
-    print()
+    print(sciezka[0])
 
     return wierzcholki[b][0]
 
@@ -111,12 +102,9 @@ def main():
 
     a, b = losowanie_przystankow(graph)
 
-    print(a)
-    print(b)
-
-    odleglosci = dijkstra(graph, a, b)
+    odleglosc = dijkstra(graph, a, b)
     print("#######################################")
-    print(odleglosci)
+    print("Dijkstra = " + str(odleglosc))
 
 
 # for i in graph.items():
