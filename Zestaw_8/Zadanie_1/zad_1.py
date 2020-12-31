@@ -1,4 +1,17 @@
-import json
+import json, random
+
+
+def losowanie_przystankow(graph):
+    wierzcholki = list(graph.keys())
+    ilosc_p = len(wierzcholki)
+
+    a = wierzcholki[random.randint(0, ilosc_p - 1)]
+    b = wierzcholki[random.randint(0, ilosc_p - 1)]
+    if b == a:
+        while b != a:
+            b = wierzcholki[random.randint(0, ilosc_p - 1)]
+
+    return a, b
 
 
 def create_graph(tramwaje):
@@ -47,19 +60,19 @@ def dijkstra(graph, a, b):
     w_min = a
 
     while w_nieodwiedzone.__len__() > 0:
-        print("zostalo nieodwiedzonych: " + str(len(w_nieodwiedzone)))
+        # print("zostalo nieodwiedzonych: " + str(len(w_nieodwiedzone)))
 
-        #minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
-        #w_min = list(w_nieodwiedzone)[0]
-        print("mam wierzcholek " + list(w_nieodwiedzone)[0])
+        # minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
+        # w_min = list(w_nieodwiedzone)[0]
+        # print("mam wierzcholek " + list(w_nieodwiedzone)[0])
         for w in w_nieodwiedzone:
-            print("Badam: " + w + " : " + str(wierzcholki[w][0]))
+            # print("Badam: " + w + " : " + str(wierzcholki[w][0]))
             if wierzcholki[w][0] < minimum and wierzcholki[w][0] > 0:
                 minimum = wierzcholki[w][0]
-                print("bede usuwal " + w)
+                # print("bede usuwal " + w)
                 w_min = w
         w_nieodwiedzone.remove(w_min)  # discard
-        print("minimum: " + str(minimum))
+        # print("minimum: " + str(minimum))
 
         for k in graph[w_min]:
             sasiad = k[0]
@@ -67,88 +80,25 @@ def dijkstra(graph, a, b):
             if wierzcholki[sasiad][0] > wierzcholki[w_min][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[w_min][0] + 1
                 wierzcholki[sasiad][1] = w_min
-                print("Update: wierz[" + sasiad + "] = " + str(wierzcholki[sasiad][0]))
-        print("###############################################")
+                # print("Update: wierz[" + sasiad + "] = " + str(wierzcholki[sasiad][0]))
+        # print("###############################################")
         if w_nieodwiedzone.__len__() > 0:
             minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
             w_min = list(w_nieodwiedzone)[0]
 
-    #print(wierzcholki)
-    for i in wierzcholki.keys():
-        print(i + ": " + str(wierzcholki[i][0]) + ", " + wierzcholki[i][1])
+    sciezka = [b]
+    temp = b
+    while temp != "":
+        sciezka.append(wierzcholki[temp][1])
+        temp = wierzcholki[temp][1]
+
+    print("SCIEZKA: " + a + " --> " + b + " = " + str(wierzcholki[b][0]))
+    for j in range(len(sciezka) - 1, -1, -1):
+        print(sciezka[j], end=" -> ")
+    print()
+
     return wierzcholki[b][0]
 
-'''
-    print("A : " + a)
-    wierzcholki = list(graph.keys())
-    w_policzone = set()  # S
-    w_niepoliczone = set(graph.keys())  # Q
-    odl = list()  # d
-    poprzednik = list()  # p
-
-    nr_a = -1
-    for i in range(len(wierzcholki)):
-        if a == wierzcholki[i]:
-            nr_a = i
-
-    if nr_a == -1:
-        print("Brak takiego przystanku")
-
-    for i in range(len(w_niepoliczone)):
-        poprzednik.append(-1)
-        if i != nr_a:
-            odl.append(999)
-        else:
-            odl.append(0)
-
-    last_value = -1
-    minimum = 0
-    while w_niepoliczone.__len__() > 0:
-        print("#################################################")
-        #print("ODLEGLOSCI: ")
-        print("W_niepoliczone rozmiar = " + str(w_niepoliczone.__len__()))
-        #print(odl)
-
-        #####
-        print("minimum: " + str(minimum))
-
-        for i in range(len(odl)):
-            if odl[i] == minimum:
-                indeks = i
-                break
-
-        print("indeks=" + str(indeks))
-        u = wierzcholki[indeks]
-        w_policzone.add(u)
-       # print(w_policzone)
-       # print(w_niepoliczone)
-        w_niepoliczone.discard(u)
-       # print(w_niepoliczone)
-
-        for j in graph[u]:
-            sasiad = j[0]
-            print("sasiad: " + sasiad)
-
-            for n in range(len(wierzcholki)):
-                if wierzcholki[n] == sasiad:
-                    indeks_sasiada = n
-                    print("ind_sasiada: " + str(indeks_sasiada))
-
-            if sasiad not in w_niepoliczone:
-                print("nie w niepolicz")
-                break
-            elif odl[indeks_sasiada] > odl[indeks] + 1:
-                odl[indeks_sasiada] = odl[indeks] + 1
-                poprzednik[indeks_sasiada] = indeks
-                print("aktualizuje odl" )
-
-        last_value = odl[0]
-        for i in odl:
-            if i < last_value and i > minimum:
-                minimum = i
-
-    return odl
-'''
 
 def main():
     with open('przystanki.json', "r", encoding='utf-8') as read_file:
@@ -159,9 +109,15 @@ def main():
 
     graph = create_graph(tramwaje)
 
-    odleglosci = dijkstra(graph, "Miodowa", "Uniwersytet Pedagogiczny")
+    a, b = losowanie_przystankow(graph)
+
+    print(a)
+    print(b)
+
+    odleglosci = dijkstra(graph, a, b)
     print("#######################################")
     print(odleglosci)
+
 
 # for i in graph.items():
 # print(i)
