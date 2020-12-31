@@ -89,7 +89,7 @@ def dijkstra(graph, a, b):
         temp = wierzcholki[temp][1]
 
     print(a + " --> " + b + " = " + str(wierzcholki[b][0]))
-    for j in range(len(sciezka)-1, 0, -1):
+    for j in range(len(sciezka) - 1, 0, -1):
         print(sciezka[j], end=" -> ")
     print(sciezka[0])
 
@@ -98,12 +98,23 @@ def dijkstra(graph, a, b):
 
 def bellman_ford(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
+    w_nieodwiedzone = [a]
     temp = a
     zmiana = False
 
-    #print(graph[temp][0][0])
-    print(graph[temp])
+    # print(graph[temp][0][0])
+    # print(graph[temp])
+    l = 0
+    for i in wierzcholki:
+        if i == a:
+            pos = l
+            break
+        l += 1
 
+    for i in range(l, len(wierzcholki), 1):
+        w_nieodwiedzone.append(wierz)
+
+"""
     for i in range(len(wierzcholki)):
         print("Iter = " + str(i))
         print("Temp: " + temp)
@@ -121,11 +132,12 @@ def bellman_ford(graph, a, b):
          #   break
 
         zmiana = False
-        pos = len(graph[temp])-1
-        print(pos)
-        temp = graph[temp][pos][0]
+        #pos = len(graph[temp])-1
+        #print(pos)
+        #temp = graph[temp][pos][0]
         print(temp)
         print("############")
+"""
 
 
 def main():
