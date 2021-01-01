@@ -65,6 +65,7 @@ def create_list_of_vertices(wierzcholki, a):
 
     for i in wierzcholki:
         if i == a:
+            help_list.append(i)
             break
         else:
             help_list.append(i)
@@ -113,7 +114,7 @@ def dijkstra(graph, a, b):
 
     print(a + " --> " + b + " = " + str(wierzcholki[b][0]))
     for j in range(len(sciezka) - 1, 0, -1):
-        print(sciezka[j], end=" -> ")
+        print(sciezka[j], end=' -> ')
     print(sciezka[0])
 
     return wierzcholki[b][0]
@@ -121,15 +122,13 @@ def dijkstra(graph, a, b):
 
 def bellman_ford(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
-    #w_nieodwiedzone = [a]
     zmiana = False
     # print(graph[temp][0][0])
     # print(graph[temp])
 
     w_nieodwiedzone_1, w_nieodwiedzone_2 = create_list_of_vertices(wierzcholki, a)
+    print("nieodw_prawa = ", end="")
     print(w_nieodwiedzone_1)
-    temp = w_nieodwiedzone_1[0]
-
 
     for i in range(len(w_nieodwiedzone_1)):
         print("Iter = " + str(i))
@@ -143,7 +142,7 @@ def bellman_ford(graph, a, b):
             if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
                 wierzcholki[sasiad][1] = temp
-                print("zmienilem "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
+                print("zmiana "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
                 zmiana = True
 
         #if zmiana == False:
@@ -154,7 +153,12 @@ def bellman_ford(graph, a, b):
         #print(temp)
         print("############")
 
-    for i in range(len(w_nieodwiedzone_2)-1,0,-1):
+    for i in wierzcholki:
+        print(i, end=": ")
+        print(wierzcholki[i])
+
+    print("~~~~~~~~~~~~~~~~~~~~ druga lista ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    for i in range(len(w_nieodwiedzone_2)-1, 0, -1):
         print("Iter = " + str(i))
         temp = w_nieodwiedzone_2[i]
         print("Temp: " + temp)
@@ -166,7 +170,7 @@ def bellman_ford(graph, a, b):
             if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
                 wierzcholki[sasiad][1] = temp
-                print("zmienilem "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
+                print("zmiana "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
                 zmiana = True
 
         #if zmiana == False:
@@ -177,7 +181,10 @@ def bellman_ford(graph, a, b):
         #print(temp)
         print("############")
 
-    print(wierzcholki)
+    for i in wierzcholki:
+        print(i, end=": ")
+        print(wierzcholki[i])
+    #print(wierzcholki)
     print(wierzcholki[b][0])
 
 
@@ -192,13 +199,13 @@ def main():
 
     a, b = losowanie_przystankow(graph)
 
-    print("#######################################")
-    odleglosc = dijkstra(graph, a, b)
+    #print("#######################################")
+    #odleglosc = dijkstra(graph, a, b)
 
     print("\n#######################################")
-    bellman_ford(graph, a, b)
+    bellman_ford(graph, "Smolki", "Wawel")
 
-    print("\nDijkstra = " + str(odleglosc))
+    #print("\nDijkstra = " + str(odleglosc))
 
 
 if __name__ == '__main__':
