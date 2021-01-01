@@ -209,11 +209,10 @@ def main():
         odl_bellman, time_b = bellman_ford(graph, a, b)
         odl_floyd, time_f = floyd_warshall(graph, a, b)
 
-        print("~~~ " + a + " --> " + b + " ~~~")
-        print("Dijkstra = " + str(odl_dijkstra) + ", time: " + str(time_d))
-        print("Bellman = " + str(odl_bellman) + ", time: " + str(time_b))
-        print("Floyd = " + str(odl_floyd) + ", time: " + str(time_f))
-        print()
+        print("\n~~~ " + a + " --> " + b + " ~~~")
+        print("Dijkstra =       " + str(odl_dijkstra) + ", time: " + str(time_d))
+        print("Bellman-Ford =   " + str(odl_bellman) + ", time: " + str(time_b))
+        print("Floyd-Warshall = " + str(odl_floyd) + ", time: " + str(time_f))
 
 
 if __name__ == '__main__':
