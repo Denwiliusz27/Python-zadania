@@ -20,9 +20,8 @@ def losowanie_przystankow(graph):
 
     a = wierzcholki[random.randint(0, ilosc_p - 1)]
     b = wierzcholki[random.randint(0, ilosc_p - 1)]
-    if b == a:
-        while b != a:
-            b = wierzcholki[random.randint(0, ilosc_p - 1)]
+    while b == a:
+        b = wierzcholki[random.randint(0, ilosc_p - 1)]
 
     return a, b
 
@@ -151,6 +150,49 @@ def bellman_ford(graph, a, b):
     return wierzcholki[b][0]
 
 
+def floyd_warshall(graph, a, b):
+    wierzcholki = [a]
+
+    for i in range(len(graph.keys())):
+        temp = wierzcholki[i]
+        for j in graph[temp]:
+            sasiad = j[0]
+            if not (sasiad in wierzcholki):
+                wierzcholki.append(sasiad)
+
+    macierz = [[999] * len(wierzcholki) for i in range(len(wierzcholki))]
+
+    # print(graph[wierzcholki[0]][0])
+    # print(wierzcholki[1])
+
+    for i in range(len(macierz)):
+        # print("i=" + str(i))
+        for j in range(len(macierz)):
+            # print("j=" + str(j))
+            for n in range(len(graph[wierzcholki[i]])):
+                if graph[wierzcholki[i]][n][0] == wierzcholki[j]:
+                    # print("ustawiam 1")
+                    macierz[i][j] = 1
+                    macierz[j][i] = 1
+        macierz[i][i] = 0
+
+    # print(wierzcholki)
+    # print(macierz[1])
+
+    for i in range(len(macierz)):
+        for j in range(len(macierz)):
+            for n in range(len(macierz)):
+                if macierz[i][j] > macierz[i][n] + macierz[n][j]:
+                    macierz[i][j] = macierz[i][n] + macierz[n][j]
+
+    pos_b = 0
+    for i in range(len(wierzcholki)):
+        if wierzcholki[i] == b:
+            pos_b = i
+            break
+
+    print(macierz[0][pos_b])
+
 def main():
     with open('przystanki.json', "r", encoding='utf-8') as read_file:
         przystanki = json.load(read_file)
@@ -165,8 +207,11 @@ def main():
     # print("#######################################")
     odl_dijkstra = dijkstra(graph, a, b)
 
-    print("\n#######################################")
+    # print("\n#######################################")
     odl_bellman = bellman_ford(graph, a, b)
+
+    print("\n#######################################")
+    floyd_warshall(graph, a, b)
 
     print("\nDijkstra = " + str(odl_dijkstra))
     print("\nBellman = " + str(odl_bellman))
