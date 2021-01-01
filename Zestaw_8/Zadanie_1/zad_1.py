@@ -119,6 +119,7 @@ def dijkstra(graph, a, b):
             minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
             w_min = list(w_nieodwiedzone)[0]
 
+    print("~~~DIJKSTRA~~~")
     print_path(wierzcholki, a, b)
 
     return wierzcholki[b][0]
@@ -129,46 +130,22 @@ def bellman_ford(graph, a, b):
     w_nieodwiedzone = set(graph.keys())
     sasiedzi_do_odwiedzenia = [a]
 
-    zmiana = False
-    i = 0
-
     while w_nieodwiedzone.__len__() > 0:
         temp = sasiedzi_do_odwiedzenia[0]
-        # print("Iter = " + str(i))
-        # print("Temp: " + temp)
         del sasiedzi_do_odwiedzenia[0]
         w_nieodwiedzone.remove(temp)
-        # print("nieodwiedzone: " + str(len(w_nieodwiedzone)))
-        # print("sasiedzi do odw: " + str(len(sasiedzi_do_odwiedzenia)))
-        # print(sasiedzi_do_odwiedzenia)
 
         for j in graph[temp]:
             sasiad = j[0]
-            # print("sasiad: " + sasiad)
 
             if (sasiad in w_nieodwiedzone) and not (sasiad in sasiedzi_do_odwiedzenia):
-                # print("Dodaje do sasiedow_nieodw : " + sasiad)
                 sasiedzi_do_odwiedzenia.append(sasiad)
 
             if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
                 wierzcholki[sasiad][1] = temp
-            # print("zmiana " + sasiad + " : " + str(wierzcholki[sasiad][0]))
-            # zmiana = True
 
-        # if zmiana == False:
-        #    break
-
-        # zmiana = False
-        # temp = w_nieodwiedzone_1[i+1]
-        # print(temp)
-        i += 1
-        # print("############")
-
-    # for i in wierzcholki:
-    #   print(wierzcholki[i])
-
-    print()
+    print("~~~BELLMAN-FORD~~~")
     print_path(wierzcholki, a, b)
 
     return wierzcholki[b][0]
