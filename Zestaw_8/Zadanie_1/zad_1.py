@@ -81,6 +81,19 @@ def create_list_of_vertices(wierzcholki, a):
     return w_nieodwiedzone, help_list
 
 
+def print_path(wierzcholki, a, b):
+    sciezka = [b]
+    temp = b
+    while temp != "":
+        sciezka.append(wierzcholki[temp][1])
+        temp = wierzcholki[temp][1]
+
+    print(a + " --> " + b + " = " + str(wierzcholki[b][0]))
+    for j in range(len(sciezka) - 1, 0, -1):
+        print(sciezka[j], end=' -> ')
+    print(sciezka[0])
+
+
 def dijkstra(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
 
@@ -106,86 +119,59 @@ def dijkstra(graph, a, b):
             minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
             w_min = list(w_nieodwiedzone)[0]
 
-    sciezka = [b]
-    temp = b
-    while temp != "":
-        sciezka.append(wierzcholki[temp][1])
-        temp = wierzcholki[temp][1]
-
-    print(a + " --> " + b + " = " + str(wierzcholki[b][0]))
-    for j in range(len(sciezka) - 1, 0, -1):
-        print(sciezka[j], end=' -> ')
-    print(sciezka[0])
+    print_path(wierzcholki, a, b)
 
     return wierzcholki[b][0]
 
 
 def bellman_ford(graph, a, b):
     wierzcholki = wyznacz_wierzcholki(graph, a)
+    w_nieodwiedzone = set(graph.keys())
+    sasiedzi_do_odwiedzenia = [a]
+
     zmiana = False
-    # print(graph[temp][0][0])
-    # print(graph[temp])
+    i = 0
 
-    w_nieodwiedzone_1, w_nieodwiedzone_2 = create_list_of_vertices(wierzcholki, a)
-    print("nieodw_prawa = ", end="")
-    print(w_nieodwiedzone_1)
-
-    for i in range(len(w_nieodwiedzone_1)):
-        print("Iter = " + str(i))
-        temp = w_nieodwiedzone_1[i]
-        print("Temp: " + temp)
+    while w_nieodwiedzone.__len__() > 0:
+        temp = sasiedzi_do_odwiedzenia[0]
+        # print("Iter = " + str(i))
+        # print("Temp: " + temp)
+        del sasiedzi_do_odwiedzenia[0]
+        w_nieodwiedzone.remove(temp)
+        # print("nieodwiedzone: " + str(len(w_nieodwiedzone)))
+        # print("sasiedzi do odw: " + str(len(sasiedzi_do_odwiedzenia)))
+        # print(sasiedzi_do_odwiedzenia)
 
         for j in graph[temp]:
             sasiad = j[0]
-            print("sasiad: " + sasiad)
+            # print("sasiad: " + sasiad)
+
+            if (sasiad in w_nieodwiedzone) and not (sasiad in sasiedzi_do_odwiedzenia):
+                # print("Dodaje do sasiedow_nieodw : " + sasiad)
+                sasiedzi_do_odwiedzenia.append(sasiad)
 
             if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
                 wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
                 wierzcholki[sasiad][1] = temp
-                print("zmiana "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
-                zmiana = True
+            # print("zmiana " + sasiad + " : " + str(wierzcholki[sasiad][0]))
+            # zmiana = True
 
-        #if zmiana == False:
-          #  break
+        # if zmiana == False:
+        #    break
 
-        zmiana = False
-        #temp = w_nieodwiedzone_1[i+1]
-        #print(temp)
-        print("############")
+        # zmiana = False
+        # temp = w_nieodwiedzone_1[i+1]
+        # print(temp)
+        i += 1
+        # print("############")
 
-    for i in wierzcholki:
-        print(i, end=": ")
-        print(wierzcholki[i])
+    # for i in wierzcholki:
+    #   print(wierzcholki[i])
 
-    print("~~~~~~~~~~~~~~~~~~~~ druga lista ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    for i in range(len(w_nieodwiedzone_2)-1, 0, -1):
-        print("Iter = " + str(i))
-        temp = w_nieodwiedzone_2[i]
-        print("Temp: " + temp)
+    print()
+    print_path(wierzcholki, a, b)
 
-        for j in graph[temp]:
-            sasiad = j[0]
-            print("sasiad: " + sasiad)
-
-            if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
-                wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
-                wierzcholki[sasiad][1] = temp
-                print("zmiana "+ sasiad + " : " + str(wierzcholki[sasiad][0]))
-                zmiana = True
-
-        #if zmiana == False:
-          #  break
-
-        zmiana = False
-        #temp = w_nieodwiedzone_2[i+1]
-        #print(temp)
-        print("############")
-
-    for i in wierzcholki:
-        print(i, end=": ")
-        print(wierzcholki[i])
-    #print(wierzcholki)
-    print(wierzcholki[b][0])
+    return wierzcholki[b][0]
 
 
 def main():
@@ -199,13 +185,14 @@ def main():
 
     a, b = losowanie_przystankow(graph)
 
-    #print("#######################################")
-    #odleglosc = dijkstra(graph, a, b)
+    # print("#######################################")
+    odl_dijkstra = dijkstra(graph, a, b)
 
     print("\n#######################################")
-    bellman_ford(graph, "Smolki", "Wawel")
+    odl_bellman = bellman_ford(graph, a, b)
 
-    #print("\nDijkstra = " + str(odleglosc))
+    print("\nDijkstra = " + str(odl_dijkstra))
+    print("\nBellman = " + str(odl_bellman))
 
 
 if __name__ == '__main__':
