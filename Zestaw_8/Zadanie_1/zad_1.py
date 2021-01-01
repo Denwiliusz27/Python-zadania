@@ -1,7 +1,7 @@
-import json, random
+import json, random, time
 
 
-def wyznacz_wierzcholki(graph, a):
+def choose_vertices(graph, a):
     wierzcholki = dict()
     for wierzcholek in graph.keys():
         wierzcholki[wierzcholek] = []
@@ -14,7 +14,7 @@ def wyznacz_wierzcholki(graph, a):
     return wierzcholki
 
 
-def losowanie_przystankow(graph):
+def draw_stops(graph):
     wierzcholki = list(graph.keys())
     ilosc_p = len(wierzcholki)
 
@@ -94,7 +94,9 @@ def print_path(wierzcholki, a, b):
 
 
 def dijkstra(graph, a, b):
-    wierzcholki = wyznacz_wierzcholki(graph, a)
+    start_time = time.time()
+
+    wierzcholki = choose_vertices(graph, a)
 
     w_nieodwiedzone = set(graph.keys())
     minimum = wierzcholki[a][0]
@@ -118,14 +120,17 @@ def dijkstra(graph, a, b):
             minimum = wierzcholki[list(w_nieodwiedzone)[0]][0]
             w_min = list(w_nieodwiedzone)[0]
 
-    print("~~~DIJKSTRA~~~")
-    print_path(wierzcholki, a, b)
+    #print("~~~DIJKSTRA~~~")
+    #print_path(wierzcholki, a, b)
 
-    return wierzcholki[b][0]
+    stop_time = time.time() - start_time
+    return wierzcholki[b][0], stop_time
 
 
 def bellman_ford(graph, a, b):
-    wierzcholki = wyznacz_wierzcholki(graph, a)
+    start_time = time.time()
+
+    wierzcholki = choose_vertices(graph, a)
     w_nieodwiedzone = set(graph.keys())
     sasiedzi_do_odwiedzenia = [a]
 
@@ -144,10 +149,11 @@ def bellman_ford(graph, a, b):
                 wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
                 wierzcholki[sasiad][1] = temp
 
-    print("~~~BELLMAN-FORD~~~")
-    print_path(wierzcholki, a, b)
+    #print("~~~BELLMAN-FORD~~~")
+    #print_path(wierzcholki, a, b)
 
-    return wierzcholki[b][0]
+    stop_time = time.time() - start_time
+    return wierzcholki[b][0], stop_time
 
 
 def floyd_warshall(graph, a, b):
@@ -160,24 +166,16 @@ def floyd_warshall(graph, a, b):
             if not (sasiad in wierzcholki):
                 wierzcholki.append(sasiad)
 
+    start_time = time.time()
     macierz = [[999] * len(wierzcholki) for i in range(len(wierzcholki))]
 
-    # print(graph[wierzcholki[0]][0])
-    # print(wierzcholki[1])
-
     for i in range(len(macierz)):
-        # print("i=" + str(i))
         for j in range(len(macierz)):
-            # print("j=" + str(j))
             for n in range(len(graph[wierzcholki[i]])):
                 if graph[wierzcholki[i]][n][0] == wierzcholki[j]:
-                    # print("ustawiam 1")
                     macierz[i][j] = 1
                     macierz[j][i] = 1
         macierz[i][i] = 0
-
-    # print(wierzcholki)
-    # print(macierz[1])
 
     for i in range(len(macierz)):
         for j in range(len(macierz)):
@@ -191,7 +189,9 @@ def floyd_warshall(graph, a, b):
             pos_b = i
             break
 
-    print(macierz[0][pos_b])
+    stop_time = time.time() - start_time
+    return macierz[0][pos_b], stop_time
+
 
 def main():
     with open('przystanki.json', "r", encoding='utf-8') as read_file:
@@ -202,19 +202,18 @@ def main():
 
     graph = create_graph(tramwaje)
 
-    a, b = losowanie_przystankow(graph)
+    for i in range(20):
+        a, b = draw_stops(graph)
 
-    # print("#######################################")
-    odl_dijkstra = dijkstra(graph, a, b)
+        odl_dijkstra, time_d = dijkstra(graph, a, b)
+        odl_bellman, time_b = bellman_ford(graph, a, b)
+        odl_floyd, time_f = floyd_warshall(graph, a, b)
 
-    # print("\n#######################################")
-    odl_bellman = bellman_ford(graph, a, b)
-
-    print("\n#######################################")
-    floyd_warshall(graph, a, b)
-
-    print("\nDijkstra = " + str(odl_dijkstra))
-    print("\nBellman = " + str(odl_bellman))
+        print("~~~ " + a + " --> " + b + " ~~~")
+        print("Dijkstra = " + str(odl_dijkstra) + ", time: " + str(time_d))
+        print("Bellman = " + str(odl_bellman) + ", time: " + str(time_b))
+        print("Floyd = " + str(odl_floyd) + ", time: " + str(time_f))
+        print()
 
 
 if __name__ == '__main__':
