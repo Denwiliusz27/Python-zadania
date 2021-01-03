@@ -178,14 +178,7 @@ def bellman_ford(graph, a, b):
 
 
 def floyd_warshall(graph, a, b):
-    wierzcholki = [a]
-
-    for i in range(len(graph.keys())):
-        temp = wierzcholki[i]
-        for j in graph[temp]:
-            sasiad = j[0]
-            if not (sasiad in wierzcholki):
-                wierzcholki.append(sasiad)
+    wierzcholki = list(graph.keys())
 
     start_time = time.time()
     macierz = [[999] * len(wierzcholki) for i in range(len(wierzcholki))]
@@ -201,17 +194,19 @@ def floyd_warshall(graph, a, b):
     for i in range(len(macierz)):
         for j in range(len(macierz)):
             for n in range(len(macierz)):
-                if macierz[i][j] > macierz[i][n] + macierz[n][j]:
-                    macierz[i][j] = macierz[i][n] + macierz[n][j]
+                if macierz[j][n] > macierz[j][i] + macierz[i][n]:
+                    macierz[j][n] = macierz[j][i] + macierz[i][n]
 
     pos_b = 0
+    pos_a = 0
     for i in range(len(wierzcholki)):
         if wierzcholki[i] == b:
             pos_b = i
-            break
+        if wierzcholki[i] == a:
+            pos_a = i
 
     stop_time = time.time() - start_time
-    return macierz[0][pos_b], stop_time
+    return macierz[pos_a][pos_b], stop_time
 
 
 def main():
@@ -223,6 +218,13 @@ def main():
 
     graph = create_graph(tramwaje)
 
+    a, b = draw_stops(graph)
+    odl_dijkstra, time_d = dijkstra(graph, a, b)
+    odl_floyd, time_f = floyd_warshall(graph, a, b)
+    print("Dijkstra =       " + str(odl_dijkstra) + ", time: " + str(time_d))
+    print("Floyd-Warshall = " + str(odl_floyd) + ", time: " + str(time_f))
+
+'''
     for i in range(20):
         a, b = draw_stops(graph)
 
@@ -235,6 +237,6 @@ def main():
         print("Bellman-Ford =   " + str(odl_bellman) + ", time: " + str(time_b))
         print("Floyd-Warshall = " + str(odl_floyd) + ", time: " + str(time_f))
 
-
+'''
 if __name__ == '__main__':
     main()
