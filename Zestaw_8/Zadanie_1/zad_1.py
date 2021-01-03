@@ -131,23 +131,44 @@ def bellman_ford(graph, a, b):
     start_time = time.time()
 
     wierzcholki = choose_vertices(graph, a)
-    w_nieodwiedzone = set(graph.keys())
-    sasiedzi_do_odwiedzenia = [a]
+    w_nieodwiedzone = [a]
 
-    while w_nieodwiedzone.__len__() > 0:
-        temp = sasiedzi_do_odwiedzenia[0]
-        del sasiedzi_do_odwiedzenia[0]
-        w_nieodwiedzone.remove(temp)
+    help_set = set(graph.keys())
+    help_set.remove(a)
 
-        for j in graph[temp]:
-            sasiad = j[0]
+    w_nieodwiedzone = w_nieodwiedzone + list(help_set)
+    zmiana = False
 
-            if (sasiad in w_nieodwiedzone) and not (sasiad in sasiedzi_do_odwiedzenia):
-                sasiedzi_do_odwiedzenia.append(sasiad)
+    for i in range(len(wierzcholki.keys()) - 1):
+        for j in range(len(w_nieodwiedzone)):
+            temp = w_nieodwiedzone[j]
+            if wierzcholki[temp][0] < 999:
+                for k in graph[temp]:
+                    sasiad = k[0]
 
-            if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
-                wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
-                wierzcholki[sasiad][1] = temp
+                    if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
+                        wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
+                        wierzcholki[sasiad][1] = temp
+                        zmiana = True
+
+        if not zmiana:
+            # print("~~~BELLMAN-FORD~~~")
+            # print_path(wierzcholki, a, b)
+
+            stop_time = time.time() - start_time
+            return wierzcholki[b][0], stop_time
+
+        zmiana = False
+
+    for j in range(len(w_nieodwiedzone)):
+        temp = w_nieodwiedzone[j]
+        if wierzcholki[temp][0] < 999:
+            for k in graph[temp]:
+                sasiad = k[0]
+
+                if wierzcholki[sasiad][0] > wierzcholki[temp][0] + 1:
+                    wierzcholki[sasiad][0] = wierzcholki[temp][0] + 1
+                    wierzcholki[sasiad][1] = temp
 
     #print("~~~BELLMAN-FORD~~~")
     #print_path(wierzcholki, a, b)
