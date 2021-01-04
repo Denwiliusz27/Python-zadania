@@ -178,9 +178,9 @@ def bellman_ford(graph, a, b):
 
 
 def floyd_warshall(graph, a, b):
-    wierzcholki = list(graph.keys())
-
     start_time = time.time()
+
+    wierzcholki = list(graph.keys())
     macierz = [[999] * len(wierzcholki) for i in range(len(wierzcholki))]
 
     for i in range(len(macierz)):
