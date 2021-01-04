@@ -218,13 +218,6 @@ def main():
 
     graph = create_graph(tramwaje)
 
-    a, b = draw_stops(graph)
-    odl_dijkstra, time_d = dijkstra(graph, a, b)
-    odl_floyd, time_f = floyd_warshall(graph, a, b)
-    print("Dijkstra =       " + str(odl_dijkstra) + ", time: " + str(time_d))
-    print("Floyd-Warshall = " + str(odl_floyd) + ", time: " + str(time_f))
-
-'''
     for i in range(20):
         a, b = draw_stops(graph)
 
@@ -237,6 +230,6 @@ def main():
         print("Bellman-Ford =   " + str(odl_bellman) + ", time: " + str(time_b))
         print("Floyd-Warshall = " + str(odl_floyd) + ", time: " + str(time_f))
 
-'''
+
 if __name__ == '__main__':
     main()
