@@ -80,14 +80,20 @@ def random_gauss(n):
 
 
 def list_with_repeats(n):
-    number = random.randint(0, n-1)
+    number = random.randint(1, n-1)
     k = random_list(number)
     print("number = ", number)
     print(k)
 
     lista = list()
     for i in range(n):
-        lista.append(k[random.randint(0, len(k)-1)])
+        temp = k[random.randint(0, len(k)-1)]
+        while temp in lista:
+            if i < len(k):
+                temp = k[random.randint(0, len(k)-1)]
+            else:
+                break
+        lista.append(temp)
 
     print("lista: ", lista)
 
