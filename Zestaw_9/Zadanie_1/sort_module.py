@@ -82,8 +82,6 @@ def random_gauss(n):
 def list_with_repeats(n):
     number = random.randint(1, n-1)
     k = random_list(number)
-    print("number = ", number)
-    print(k)
 
     lista = list()
     for i in range(n):
@@ -95,6 +93,6 @@ def list_with_repeats(n):
                 break
         lista.append(temp)
 
-    print("lista: ", lista)
-
     return lista
+
+

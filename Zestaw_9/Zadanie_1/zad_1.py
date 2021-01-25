@@ -16,8 +16,7 @@ def main():
     print("b) prawie posortowana: ", s_m.nearly_sorted(10))
     print("c) prawie posortowana w odwrotnej kolejnosci: ", s_m.nearly_sorted_reverse(10))
     print("d) rozklad Gaussa: ", s_m.random_gauss(10))
-    #print("e) listaz powtorzeniami: ", s_m.list_with_repeats(10))
-    s_m.list_with_repeats(10)
+    print("e) lista z powtorzeniami: ", s_m.list_with_repeats(10))
 
 if __name__ == '__main__':
     main()
