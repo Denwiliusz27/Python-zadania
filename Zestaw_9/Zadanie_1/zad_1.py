@@ -10,5 +10,14 @@ Przygotować moduł Pythona z funkcjami tworzącymi listy liczb całkowitych do 
 
 import sort_module as s_m
 
-#print(s_m.insert_sort(s_m.random_list(10)))
-print(s_m.nearly_sorted(10))
+
+def main():
+    print("a) kolejnosc losowa: ", s_m.random_list(10))
+    print("b) prawie posortowana: ", s_m.nearly_sorted(10))
+    print("c) prawie posortowana w odwrotnej kolejnosci: ", s_m.nearly_sorted_reverse(10))
+    print("d) rozklad Gaussa: ", s_m.random_gauss(10))
+    #print("e) listaz powtorzeniami: ", s_m.list_with_repeats(10))
+    s_m.list_with_repeats(10)
+
+if __name__ == '__main__':
+    main()
