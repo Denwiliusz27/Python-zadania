@@ -18,5 +18,6 @@ def main():
     print("d) rozklad Gaussa: ", s_m.random_gauss(10))
     print("e) lista z powtorzeniami: ", s_m.list_with_repeats(10))
 
+
 if __name__ == '__main__':
     main()
