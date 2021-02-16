@@ -31,7 +31,7 @@ def draw_grid(x_amount, y_amount, cell_w):
 
 
 def draw_up(cell):
-    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y - 2, cell_w - 3, cell_w * 2 - 3])
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y - cell_w + 2, cell_w - 3, cell_w * 2 - 3])
     pygame.display.flip()
 
 
@@ -46,7 +46,7 @@ def draw_down(cell):
 
 
 def draw_left(cell):
-    pygame.draw.rect(screen, BLUE, [cell.x - 2 - cell_w, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
+    pygame.draw.rect(screen, BLUE, [cell.x - cell_w + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
     pygame.display.flip()
 
 
@@ -61,7 +61,7 @@ def draw_maze(cell_w):
         visited.append(cell)
 
         directions = []  # u - up, r - right, d - down, l - left
-        time.sleep(2)
+        time.sleep(0.1)
 
         if (Cell(cell.x, cell.y - cell_w).if_in_list(visited) is False) and (Cell(cell.x, cell.y - cell_w).if_in_list(grid) is True):
             directions.append("u")
@@ -76,30 +76,30 @@ def draw_maze(cell_w):
             directions.append("l")
             #print("Dodaje L")
 
-        #print("directions ma : ", len(directions))
+        print("directions ma : ", len(directions))
         if len(directions) > 0:
             number = random.randint(0, len(directions) - 1)
             rand_direction = directions[number]
 
             if rand_direction == "u":
-                #print("wybralem U")
+                print("wybralem U")
                 draw_up(cell)
                 cell = Cell(cell.x, cell.y - cell_w)
             elif rand_direction == "r":
-                #print("wybralem R")
+                print("wybralem R")
                 draw_right(cell)
                 cell = Cell(cell.x + cell_w, cell.y)
             elif rand_direction == "d":
-                #print("wybralem D")
+                print("wybralem D")
                 draw_down(cell)
                 cell = Cell(cell.x, cell.y + cell_w)
             elif rand_direction == "l":
-                #print("wybralem L")
+                print("wybralem L")
                 draw_left(cell)
                 cell = Cell(cell.x - cell_w, cell.y)
 
             stack.append(cell)
-            print("new cell: x=", cell.x, " y=", cell.y)
+            #print("new cell: x=", cell.x, " y=", cell.y)
 
         else:
             cell = stack.pop()
