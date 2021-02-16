@@ -30,31 +30,79 @@ def draw_grid(x_amount, y_amount, cell_w):
             pygame.display.flip()
 
 
-def draw_right(x, y):
-    pygame.draw.rect(screen, BLUE, [x + 2, y + 2, cell_w, cell_w*2 + 3])
+def draw_up(cell):
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y - 2, cell_w - 3, cell_w * 2 - 3])
+    pygame.display.flip()
+
+
+def draw_right(cell):
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
+    pygame.display.flip()
+
+
+def draw_down(cell):
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w * 2 - 3])
+    pygame.display.flip()
+
+
+def draw_left(cell):
+    pygame.draw.rect(screen, BLUE, [cell.x - 2 - cell_w, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
     pygame.display.flip()
 
 
 def draw_maze(cell_w):
     cell = Cell(grid[0].x, grid[0].y)
-    visited.append(cell)
+    # visited.append(cell)
     stack.append(cell)
     pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w - 3])
     pygame.display.flip()
 
-    directions = []  # u - up, r - right, d - down, l - left
     while len(stack) > 0:
-        if ((cell.x, cell.y - cell_w) not in visited) and ((cell.x, cell.y - cell_w) in grid):
-            directions.append("u")
-        elif ((cell.x + cell_w, cell.y) not in visited) and ((cell.x + cell_w, cell.y) in grid):  # sprawdza sasiada po prawej
-            directions.append("r")
-        elif ((cell.x, cell.y + cell_w) not in visited) and ((cell.x, cell.y + cell_w) in grid):
-            directions.append("d")
-        elif ((cell.x - cell_w, cell.y) not in visited) and ((cell.x - cell_w, cell.y) in grid):
-            directions.append("l")
+        visited.append(cell)
 
+        directions = []  # u - up, r - right, d - down, l - left
+        time.sleep(2)
+
+        if (Cell(cell.x, cell.y - cell_w).if_in_list(visited) is False) and (Cell(cell.x, cell.y - cell_w).if_in_list(grid) is True):
+            directions.append("u")
+            #print("Dodaje U")
+        if (Cell(cell.x + cell_w, cell.y).if_in_list(visited) is False) and (Cell(cell.x + cell_w, cell.y).if_in_list(grid) is True):  # sprawdza sasiada po prawej
+            directions.append("r")
+            #print("Dodaje R")
+        if (Cell(cell.x, cell.y + cell_w).if_in_list(visited) is False) and (Cell(cell.x, cell.y + cell_w).if_in_list(grid) is True):
+            directions.append("d")
+            #print("Dodaje D")
+        if (Cell(cell.x - cell_w, cell.y).if_in_list(visited) is False) and (Cell(cell.x - cell_w, cell.y).if_in_list(grid) is True):
+            directions.append("l")
+            #print("Dodaje L")
+
+        #print("directions ma : ", len(directions))
         if len(directions) > 0:
-            rand_direction = 
+            number = random.randint(0, len(directions) - 1)
+            rand_direction = directions[number]
+
+            if rand_direction == "u":
+                #print("wybralem U")
+                draw_up(cell)
+                cell = Cell(cell.x, cell.y - cell_w)
+            elif rand_direction == "r":
+                #print("wybralem R")
+                draw_right(cell)
+                cell = Cell(cell.x + cell_w, cell.y)
+            elif rand_direction == "d":
+                #print("wybralem D")
+                draw_down(cell)
+                cell = Cell(cell.x, cell.y + cell_w)
+            elif rand_direction == "l":
+                #print("wybralem L")
+                draw_left(cell)
+                cell = Cell(cell.x - cell_w, cell.y)
+
+            stack.append(cell)
+            print("new cell: x=", cell.x, " y=", cell.y)
+
+        else:
+            cell = stack.pop()
 
 
 def main():
@@ -87,6 +135,6 @@ if __name__ == '__main__':
     stack = []
 
     cell_w = 25
-    draw_grid(30, 20, cell_w)
+    draw_grid(7, 7, cell_w)
     draw_maze(cell_w)
     main()

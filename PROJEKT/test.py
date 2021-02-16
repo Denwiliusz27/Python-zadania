@@ -15,3 +15,5 @@ if __name__ == '__main__':
 
     c = cell(1, 3)
     c.in_list(cells)
+    cella = cells.pop()
+    print(cella.x, cella.y)
