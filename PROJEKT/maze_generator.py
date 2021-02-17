@@ -93,55 +93,109 @@ def add_neighbour(grid, cell, neighbour):
 
 def draw_up(grid, cell, cell_w):
     """
-        Usuwa górną ścianę danej komórki, zaznacza komórkę powyżej odpowiednim kolorem, oznacza obie komórki jako
-        wzajemnych sąsiadów
+        Usuwa górną ścianę danej komórki przez nadpisanie, zaznacza komórkę powyżej odpowiednim kolorem, oznacza obie
+        komórki jako wzajemnych sąsiadów.
+        Nadpisanie następuje poprzez poprowadzenie przez obie komórki jednego prostokątu o podanym kolorze.
+
         :param grid: słownik
         :param cell: komórka, której górną krawędź usuwamy
         :param cell_w: szerokość komórki
     """
-    up_neighbour = Cell(cell.x, cell.y - cell_w)
-    add_neighbour(grid, cell, up_neighbour)
+    up_neighbour = Cell(cell.x, cell.y - cell_w)  # komórka nad podaną komórką
+    add_neighbour(grid, cell, up_neighbour)  # ustawienie relacji sasiedztwa między komórkami
 
     pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y - cell_w + 2, cell_w - 3, cell_w * 2 - 3])
 
 
 def draw_right(grid, cell, cell_w):
-    right_neighbour = Cell(cell.x + cell_w, cell.y)
-    add_neighbour(grid, cell, right_neighbour)
+    """
+        Usuwa prawą ścianę danej komórki przez nadpisanie, zaznacza komórkę, będącą po prawej, odpowiednim kolorem,
+        oznacza obie komórki jako wzajemnych sąsiadów.
+        Nadpisanie następuje poprzez poprowadzenie przez obie komórki jednego prostokątu o podanym kolorze.
+
+        :param grid: słownik
+        :param cell: komórka, której prawą krawędź usuwamy
+        :param cell_w: szerokość komórki
+    """
+    right_neighbour = Cell(cell.x + cell_w, cell.y)  # komórka po prawej stronie od podanej komórki
+    add_neighbour(grid, cell, right_neighbour)  # ustawienie relacji sasiedztwa między komórkami
 
     pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
 
 
 def draw_down(grid, cell, cell_w):
-    down_neighbour = Cell(cell.x, cell.y + cell_w)
-    add_neighbour(grid, cell, down_neighbour)
+    """
+        Usuwa dolną ścianę danej komórki przez nadpisanie, zaznacza komórkę, będącą poniżej, odpowiednim kolorem,
+        oznacza obie komórki jako wzajemnych sąsiadów.
+        Nadpisanie następuje poprzez poprowadzenie przez obie komórki jednego prostokątu o podanym kolorze.
+
+
+        :param grid: słownik
+        :param cell: komórka, której prawą krawędź usuwamy
+        :param cell_w: szerokość komórki
+    """
+    down_neighbour = Cell(cell.x, cell.y + cell_w)  # komórka poniżej danej komórki
+    add_neighbour(grid, cell, down_neighbour)  # ustawienie relacji sasiedztwa między komórkami
 
     pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w * 2 - 3])
 
 
 def draw_left(grid, cell, cell_w):
-    left_neighbour = Cell(cell.x - cell_w, cell.y)
-    add_neighbour(grid, cell, left_neighbour)
+    """
+        Usuwa lewą ścianę danej komórki przez nadpisanie, zaznacza komórkę, będącą po lewej, odpowiednim kolorem,
+        oznacza obie komórki jako wzajemnych sąsiadów.
+        Nadpisanie następuje poprzez poprowadzenie przez obie komórki jednego prostokątu o podanym kolorze.
+
+        :param grid: słownik
+        :param cell: komórka, której lewą krawędź usuwamy
+        :param cell_w: szerokość komórki
+    """
+    left_neighbour = Cell(cell.x - cell_w, cell.y)  # komórka na lewo od danej komórki
+    add_neighbour(grid, cell, left_neighbour)  # ustawienie relacji sasiedztwa między komórkami
 
     pygame.draw.rect(screen, BLUE, [cell.x - cell_w + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
 
 
 def draw_path_cell(cell):
+    """
+        Rysuje punkt w labiryncie będący częścią ścieżki wyjściowej z labiryntu
+
+        :param cell: komórka, w której rysowany jest punkt
+    """
     pygame.draw.rect(screen, YELLOW, [cell.x + cell_w / 3, cell.y + cell_w / 3, cell_w / 3, cell_w / 3])
     pygame.display.flip()
 
 
 def draw_single_cell(cell):
+    """
+        Maluje podaną komórkę odpowiednim kolorem.
+
+        :param cell: komórka, która zostanie wypełniona danym kolorem
+    """
     pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w - 3])
     pygame.display.flip()
 
 
 def draw_creating_cell(cell):
+    """
+        Komórka, która służy w algorytmie do tworzenia labiryntu. Zaznaczona jest innym kolorem niż reszta komórek
+
+        :param cell: komórka tworząca labirynt, która wypełniana jest odmiennym kolorem
+    """
     pygame.draw.rect(screen, RED, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w - 3])
     pygame.display.flip()
 
 
 def draw_maze(grid, cell_w):
+    """
+        Służy do stworzenia labiryntu za pomocą recursive implementation. Startując od koomórki w lewym górnym rogu,
+        wybiera kolejne, nieodwiedzone wcześniej komórki, zazanacza je odpowiednim kolorem, usuwając jednocześnie
+        odpowiednie ściany i ustala relacje sąsiedztwa między nimi.
+
+        :param grid: słownik, listybędące wartościami dla podanych kluczy sa uzupełniane w trakcie działania funkcji
+        :param cell_w: szerokość pojedynczej komórki
+        :return: uzupełniony słownik 
+    """
     stack, visited = [], []
 
     cell = Cell(list(grid.keys())[0].x, list(grid.keys())[0].y)
