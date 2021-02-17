@@ -4,11 +4,28 @@ import random
 
 
 class Cell:
+    """ Klasa reprezentująca komórkę w labiryncie
+        Labirynt składa się z wielu komórek, każda z nich posida współrzędne x i y, będące wartością pikselową,
+        oznaczające położenie komórki w oknie
+    """
+
     def __init__(self, x, y):
+        """
+            Tworzy nową komórkę o podanych wartościach
+        :param x: wartość położenia w poziomie
+        :param y: wartośc położenia w pionie
+        """
         self.x = x
         self.y = y
 
     def in_list(self, lista):
+        """
+            Sprawdza czy komórka znajduje się w podanej liście
+
+            :param lista: lista w której szukamy komórki
+
+            :return: True jeśli komórka znajduje się w liście, False w przeciwnym przypadku
+        """
         for i in lista:
             if i.x == self.x and i.y == self.y:
                 return True
@@ -16,6 +33,15 @@ class Cell:
 
 
 def compare_cells(cell1, cell2):
+    """
+        Porównuje dwie komórki (ich współrzędne)
+
+        :param cell1: pierwsza komórka
+        :param cell1: druga komórka
+
+        :return: True: jeśli komórki mają te same współrzędne
+        :return: False w przeciwnym przypadku
+    """
     if cell1.x == cell2.x and cell1.y == cell2.y:
         return True
     else:
@@ -23,33 +49,56 @@ def compare_cells(cell1, cell2):
 
 
 def draw_grid(grid, x_amount, y_amount, cell_w):
+    """
+        Służy do stworzenia i narysowania w oknie kraty, będącej podstawą do budowy labiryntu
+
+        :param grid: słownik, którego kluczami są komórki, a wartościami listy ich sąsiadów
+        :param x_amount: ilość kolumn
+        :param y_amount: ilość wierszy
+        :param cell_w: szerokość komórki
+        :return: wypełniony słownik
+    """
     y = 0
 
     for i in range(0, y_amount):
         x = 25
         y = y + cell_w
         for j in range(0, x_amount):
-            pygame.draw.line(screen, WHITE, [x, y], [x + cell_w, y], 3)  # rysuje gorna krawedz komorki
-            pygame.draw.line(screen, WHITE, [x + cell_w, y], [x + cell_w, y + cell_w], 3)  # rysuje prawa krawedz
-            pygame.draw.line(screen, WHITE, [x, y + cell_w], [x + cell_w, y + cell_w], 3)  # rysuje dolna krawedz
-            pygame.draw.line(screen, WHITE, [x, y], [x, y + cell_w], 3)  # rysuje lewa krawedz
+            pygame.draw.line(screen, WHITE, [x, y], [x + cell_w, y], 3)  # rysuje górną krawędź komórki
+            pygame.draw.line(screen, WHITE, [x + cell_w, y], [x + cell_w, y + cell_w], 3)  # rysuje prawą krawędź
+            pygame.draw.line(screen, WHITE, [x, y + cell_w], [x + cell_w, y + cell_w], 3)  # rysuje dolną krawędź
+            pygame.draw.line(screen, WHITE, [x, y], [x, y + cell_w], 3)  # rysuje lewą krawędź
             pygame.display.flip()
 
-            grid[Cell(x, y)] = []
+            grid[Cell(x, y)] = []  # tworzy pustą listę sąsiadów dla komórki, będącej kluczem w słowniku
             x = x + cell_w
 
     return grid
 
 
 def add_neighbour(grid, cell, neighbour):
+    """
+        Dla podanej komórki dodaje sąsiada w liście sąsiadów w słowniku
+
+        :param grid: słownik
+        :param cell: komórka, będąca kluczem słownika
+        :param neighbour: komórka, która zostaje dodana do listy sasiadów komórki cell
+    """
     for i in grid.keys():
         if compare_cells(cell, i):
-            grid[i].append(neighbour)
+            grid[i].append(neighbour)  # dodaje sąsiada do listy sąsiadów
         if compare_cells(neighbour, i):
-            grid[i].append(cell)
+            grid[i].append(cell)  # komórka zostaje dodana jako sąsiad jej sąsiada
 
 
 def draw_up(grid, cell, cell_w):
+    """
+        Usuwa górną ścianę danej komórki, zaznacza komórkę powyżej odpowiednim kolorem, oznacza obie komórki jako
+        wzajemnych sąsiadów
+        :param grid: słownik
+        :param cell: komórka, której górną krawędź usuwamy
+        :param cell_w: szerokość komórki
+    """
     up_neighbour = Cell(cell.x, cell.y - cell_w)
     add_neighbour(grid, cell, up_neighbour)
 
@@ -197,8 +246,8 @@ if __name__ == '__main__':
     WHITE = (255, 255, 255)
     BLUE = (0, 0, 255)
 
-    x_cells = 7
-    y_cells = 7
+    x_cells = 15
+    y_cells = 15
     cell_w = 25
 
     pygame.init()
