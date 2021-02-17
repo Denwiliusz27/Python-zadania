@@ -88,9 +88,13 @@ def draw_left(grid, cell):
 
 
 def draw_path(cell):
-    pygame.draw.rect(screen, YELLOW, [cell.x + cell_w/4, cell.y + cell_w/4, cell.x + 3*cell_w/4, cell.y + 3*cell_w/4])
+    pygame.draw.rect(screen, YELLOW, [cell.x + cell_w/3, cell.y + cell_w/3, cell_w/3, cell_w/3])
     pygame.display.flip()
 
+
+def draw_single_cell(cell):
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w - 3])
+    pygame.display.flip()
 
 
 def draw_maze(grid, cell_w):
@@ -99,14 +103,14 @@ def draw_maze(grid, cell_w):
     cell = Cell(list(grid.keys())[0].x, list(grid.keys())[0].y)
     stack.append(cell)
 
-    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w - 3])
+    draw_single_cell(cell)
     pygame.display.flip()
 
     while len(stack) > 0:
         visited.append(cell)
 
         directions = []  # u - up, r - right, d - down, l - left
-        time.sleep(0.1)
+        time.sleep(0.05)
 
         if (Cell(cell.x, cell.y - cell_w).if_in_list(visited) is False) and (Cell(cell.x, cell.y - cell_w).if_in_list(list(grid.keys())) is True):
             directions.append("u")
@@ -145,19 +149,40 @@ def draw_maze(grid, cell_w):
     return grid
 
 
-def find_path():
+def find_path(grid):
     last_nr = len(list(grid.keys()))
     last_cell = list(grid.keys())[last_nr-1]
-    print(last_cell.x, last_cell.y)
 
     cell = list(grid.keys())[0]
     stack = []
     visited = []
 
     while not compare_cells(cell, last_cell):
-        stack.append(cell)
+        print("x=", cell.x, " y=", cell.y)
         visited.append(cell)
+        neighbours = []
+        draw_path(cell)
 
+        for i in grid.keys():
+            if compare_cells(cell, i):
+                for j in grid[i]:
+                    if not j.if_in_list(visited):
+                        neighbours.append(j)
+                break
+
+        print("mam sasiadow: ", len(neighbours))
+        if len(neighbours) > 0:
+            stack.append(cell)
+            cell = random.choice(neighbours)
+        else:
+            time.sleep(0.3)
+            draw_single_cell(cell)
+            cell = stack.pop()
+
+        time.sleep(0.3)
+
+    draw_path(cell)
+    print("koniec?")
 
 
 def main():
@@ -190,7 +215,7 @@ if __name__ == '__main__':
     #stack = []
 
     cell_w = 25
-    grid = draw_grid(grid, 3, 3, cell_w)
+    grid = draw_grid(grid, 7, 7, cell_w)
     grid = draw_maze(grid, cell_w)
-    find_path()
+    find_path(grid)
     main()

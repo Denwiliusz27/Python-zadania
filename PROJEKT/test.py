@@ -11,9 +11,8 @@ class cell:
 
 
 if __name__ == '__main__':
-    cells = [cell(1, 3), cell(2, 4), cell(3, 1)]
+    cells = {cell(1, 3) : ["ala", "ela"], cell(2, 4) : ["kaja", "kon"], cell(3, 1): "jurek"}
 
     c = cell(1, 3)
-    c.in_list(cells)
-    cella = cells.pop()
-    print(cella.x, cella.y)
+
+    print(cells[cell(2, 4)])
