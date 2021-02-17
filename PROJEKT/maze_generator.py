@@ -192,43 +192,44 @@ def draw_maze(grid, cell_w):
         wybiera kolejne, nieodwiedzone wcześniej komórki, zazanacza je odpowiednim kolorem, usuwając jednocześnie
         odpowiednie ściany i ustala relacje sąsiedztwa między nimi.
 
-        :param grid: słownik, listybędące wartościami dla podanych kluczy sa uzupełniane w trakcie działania funkcji
+        :param grid: słownik, listy będące wartościami dla podanych kluczy sa uzupełniane w trakcie działania funkcji
         :param cell_w: szerokość pojedynczej komórki
-        :return: uzupełniony słownik 
+        :return: uzupełniony słownik
     """
-    stack, visited = [], []
+    stack = []  # stos na który odkładane są komórki, których sąsiadów należy sprawdzić
+    visited = []  # lista odwiedzonych komórek
 
-    cell = Cell(list(grid.keys())[0].x, list(grid.keys())[0].y)
-    stack.append(cell)
+    cell = Cell(list(grid.keys())[0].x, list(grid.keys())[0].y)  # początkowa komórka leżąca w lewym górnym rogu
+    stack.append(cell)  # komórka zostaje dodana na stos
 
-    draw_single_cell(cell)
+    draw_single_cell(cell)  # komórka zostaje zaznaczona odpowiednim kolorem
     pygame.display.flip()
 
-    while len(stack) > 0:
-        visited.append(cell)
+    while len(stack) > 0:  # pętla wykonująca się dopóki na stosie znajdują się komórki
+        visited.append(cell) # komórka zostaje oznaczona jako odwiedzona
 
-        directions = []  # u - up, r - right, d - down, l - left
+        directions = []  # lista dostępnych kierunków ruchu, u - góra, r - prawo, d - dół, l - lewo
         time.sleep(0.05)
 
-        if (Cell(cell.x, cell.y - cell_w).in_list(visited) is False) and (
-                Cell(cell.x, cell.y - cell_w).in_list(list(grid.keys())) is True):
-            directions.append("u")
-        if (Cell(cell.x + cell_w, cell.y).in_list(visited) is False) and (
-                Cell(cell.x + cell_w, cell.y).in_list(list(grid.keys())) is True):  # sprawdza sasiada po prawej
+        if (Cell(cell.x, cell.y - cell_w).in_list(visited) is False) and (  # sprawdza czy komórka powyżej danej komórki
+                Cell(cell.x, cell.y - cell_w).in_list(list(grid.keys())) is True):  # nie została jeszcze odwiedzona i
+            directions.append("u")                                          # czy jest ona wśród kluczy słownika
+        if (Cell(cell.x + cell_w, cell.y).in_list(visited) is False) and (  # sprawdza komórkę po prawej
+                Cell(cell.x + cell_w, cell.y).in_list(list(grid.keys())) is True):
             directions.append("r")
-        if (Cell(cell.x, cell.y + cell_w).in_list(visited) is False) and (
+        if (Cell(cell.x, cell.y + cell_w).in_list(visited) is False) and (  # sprawdza komórkę u dołu
                 Cell(cell.x, cell.y + cell_w).in_list(list(grid.keys())) is True):
             directions.append("d")
-        if (Cell(cell.x - cell_w, cell.y).in_list(visited) is False) and (
+        if (Cell(cell.x - cell_w, cell.y).in_list(visited) is False) and (  # sprawdza komórkę po lewej
                 Cell(cell.x - cell_w, cell.y).in_list(list(grid.keys())) is True):
-            directions.append("l")
-
+            directions.append("l")  # jeśli warunki zostały spełnione, odpowiedni kierunek zostaje dodany do listy jako
+                                    # opcja kolejnego ruchu
         if len(directions) > 0:
-            rand_direction = random.choice(directions)
-
-            if rand_direction == "u":
-                draw_up(grid, cell, cell_w)
-                cell = Cell(cell.x, cell.y - cell_w)
+            rand_direction = random.choice(directions)  # zostaje wybrany randomowy kierunek z listy dostępnych kierunków
+                                                        # kierunków
+            if rand_direction == "u": # wybrano kierunek w górę, zostaje usunięta górna krawędź komórki przez nadpisanie
+                draw_up(grid, cell, cell_w)  # Komórka powyżej zostaje wybrana jako nowa komórka, zostaje odpowiednio
+                cell = Cell(cell.x, cell.y - cell_w)  # zaznaczona w labiryncie. Ustalana jest relacja sasiedztwa.
             elif rand_direction == "r":
                 draw_right(grid, cell, cell_w)
                 cell = Cell(cell.x + cell_w, cell.y)
@@ -238,9 +239,9 @@ def draw_maze(grid, cell_w):
             elif rand_direction == "l":
                 draw_left(grid, cell, cell_w)
                 cell = Cell(cell.x - cell_w, cell.y)
-            stack.append(cell)
+            stack.append(cell)  # wybrana komórka zostaje dodana na stos
             time.sleep(0.05)
-            draw_creating_cell(cell)
+            draw_creating_cell(cell)  # wybrana komórka zostaje odpowiednio zaznaczona
             pygame.display.flip()
         else:
             draw_single_cell(cell)
