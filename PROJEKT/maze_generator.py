@@ -78,7 +78,7 @@ def draw_left(grid, cell, cell_w):
 
 
 def draw_path_cell(cell):
-    pygame.draw.rect(screen, YELLOW, [cell.x + cell_w/3, cell.y + cell_w/3, cell_w/3, cell_w/3])
+    pygame.draw.rect(screen, YELLOW, [cell.x + cell_w / 3, cell.y + cell_w / 3, cell_w / 3, cell_w / 3])
     pygame.display.flip()
 
 
@@ -87,11 +87,8 @@ def draw_single_cell(cell):
     pygame.display.flip()
 
 
-def end_message():
-    pygame.draw.rect(screen, WHITE, [280, 220, 300, 70])
-    font = pygame.font.Font(None, 74)
-    text = font.render("KONIEC", 1, RED)
-    screen.blit(text, (300, 240))
+def draw_creating_cell(cell):
+    pygame.draw.rect(screen, RED, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w - 3])
     pygame.display.flip()
 
 
@@ -110,13 +107,17 @@ def draw_maze(grid, cell_w):
         directions = []  # u - up, r - right, d - down, l - left
         time.sleep(0.05)
 
-        if (Cell(cell.x, cell.y - cell_w).in_list(visited) is False) and (Cell(cell.x, cell.y - cell_w).in_list(list(grid.keys())) is True):
+        if (Cell(cell.x, cell.y - cell_w).in_list(visited) is False) and (
+                Cell(cell.x, cell.y - cell_w).in_list(list(grid.keys())) is True):
             directions.append("u")
-        if (Cell(cell.x + cell_w, cell.y).in_list(visited) is False) and (Cell(cell.x + cell_w, cell.y).in_list(list(grid.keys())) is True):  # sprawdza sasiada po prawej
+        if (Cell(cell.x + cell_w, cell.y).in_list(visited) is False) and (
+                Cell(cell.x + cell_w, cell.y).in_list(list(grid.keys())) is True):  # sprawdza sasiada po prawej
             directions.append("r")
-        if (Cell(cell.x, cell.y + cell_w).in_list(visited) is False) and (Cell(cell.x, cell.y + cell_w).in_list(list(grid.keys())) is True):
+        if (Cell(cell.x, cell.y + cell_w).in_list(visited) is False) and (
+                Cell(cell.x, cell.y + cell_w).in_list(list(grid.keys())) is True):
             directions.append("d")
-        if (Cell(cell.x - cell_w, cell.y).in_list(visited) is False) and (Cell(cell.x - cell_w, cell.y).in_list(list(grid.keys())) is True):
+        if (Cell(cell.x - cell_w, cell.y).in_list(visited) is False) and (
+                Cell(cell.x - cell_w, cell.y).in_list(list(grid.keys())) is True):
             directions.append("l")
 
         if len(directions) > 0:
@@ -135,16 +136,22 @@ def draw_maze(grid, cell_w):
                 draw_left(grid, cell, cell_w)
                 cell = Cell(cell.x - cell_w, cell.y)
             stack.append(cell)
+            time.sleep(0.05)
+            draw_creating_cell(cell)
             pygame.display.flip()
         else:
+            draw_single_cell(cell)
+            time.sleep(0.05)
             cell = stack.pop()
+            draw_creating_cell(cell)
 
+    draw_single_cell(cell)
     return grid
 
 
 def find_path(grid):
     last_nr = len(list(grid.keys()))
-    last_cell = list(grid.keys())[last_nr-1]
+    last_cell = list(grid.keys())[last_nr - 1]
 
     cell = list(grid.keys())[0]
     stack = []
@@ -173,7 +180,6 @@ def find_path(grid):
         time.sleep(0.15)
 
     draw_path_cell(cell)
-    end_message()
 
 
 def main():
@@ -191,17 +197,21 @@ if __name__ == '__main__':
     WHITE = (255, 255, 255)
     BLUE = (0, 0, 255)
 
-    size = (560, 560)
+    x_cells = 7
+    y_cells = 7
+    cell_w = 25
 
     pygame.init()
-    screen = pygame.display.set_mode(size)
+    width = 50 + x_cells * cell_w
+    hight = 50 + y_cells * cell_w
+
+    screen = pygame.display.set_mode((width, hight))
     pygame.display.set_caption("Maze generator")
     clock = pygame.time.Clock()
 
     grid = {}
 
-    cell_w = 25
-    grid = draw_grid(grid, 20, 20, cell_w)
+    grid = draw_grid(grid, x_cells, y_cells, cell_w)
     grid = draw_maze(grid, cell_w)
     find_path(grid)
     main()
