@@ -39,8 +39,7 @@ def compare_cells(cell1, cell2):
         :param cell1: pierwsza komórka
         :param cell1: druga komórka
 
-        :return: True: jeśli komórki mają te same współrzędne
-        :return: False w przeciwnym przypadku
+        :return: True: jeśli komórki mają te same współrzędne, False w przeciwnym przypadku
     """
     if cell1.x == cell2.x and cell1.y == cell2.y:
         return True
@@ -61,7 +60,7 @@ def draw_grid(grid, x_amount, y_amount, cell_w):
     """
     y = 0
 
-    for i in range(0, y_amount):
+    for i in range(0, y_amount):  # tworzy kratę o podanej liczbie kolumn i wierszy
         x = 25
         y = y + cell_w
         for j in range(0, x_amount):
@@ -215,7 +214,7 @@ def draw_maze(grid, cell_w):
 
         if (Cell(cell.x, cell.y - cell_w).in_list(visited) is False) and (  # sprawdza czy komórka powyżej danej komórki
                 Cell(cell.x, cell.y - cell_w).in_list(list(grid.keys())) is True):  # nie została jeszcze odwiedzona i
-            directions.append("u")  # czy jest ona wśród kluczy słownika
+            directions.append("u")                                                  # czy jest ona wśród kluczy słownika
         if (Cell(cell.x + cell_w, cell.y).in_list(visited) is False) and (  # sprawdza komórkę po prawej
                 Cell(cell.x + cell_w, cell.y).in_list(list(grid.keys())) is True):
             directions.append("r")
@@ -224,13 +223,11 @@ def draw_maze(grid, cell_w):
             directions.append("d")
         if (Cell(cell.x - cell_w, cell.y).in_list(visited) is False) and (  # sprawdza komórkę po lewej
                 Cell(cell.x - cell_w, cell.y).in_list(list(grid.keys())) is True):
-            directions.append("l")  # jeśli warunki zostały spełnione, odpowiedni kierunek zostaje dodany do listy jako
-            # opcja kolejnego ruchu
+            directions.append("l")  # odpowiedni kierunek zostaje dodany do listy jako opcja kolejnego ruchu
+
         if len(directions) > 0:
-            rand_direction = random.choice(
-                directions)  # zostaje wybrany randomowy kierunek z listy dostępnych kierunków
-            # kierunków
-            if rand_direction == "u":  # wybrano kierunek w górę, zostaje usunięta górna krawędź komórki przez nadpisanie
+            rand_direction = random.choice(directions)  # randomowo jest wybierany kierunek z listy dostępnych kierunków
+            if rand_direction == "u":  # wybrano kierunek w górę, górna krawędź komórki jest usuwana przez nadpisanie
                 draw_up(grid, cell, cell_w)  # Komórka powyżej zostaje wybrana jako nowa komórka, zostaje odpowiednio
                 cell = Cell(cell.x, cell.y - cell_w)  # zaznaczona w labiryncie. Ustalana jest relacja sasiedztwa.
             elif rand_direction == "r":
@@ -247,7 +244,7 @@ def draw_maze(grid, cell_w):
             draw_creating_cell(cell)  # wybrana komórka tworząca labirynt zostaje odpowiednio zaznaczona
             pygame.display.flip()
         else:  # w przypadku kiedy dla danej komórki nie ma możliwości poruszenia w żadnym kierunku
-            draw_single_cell(cell)  #
+            draw_single_cell(cell)
             time.sleep(0.07)
             cell = stack.pop()  # ze stosu zostaje pobrana i usunięta ostatnio dodana komórka
             draw_creating_cell(cell)
