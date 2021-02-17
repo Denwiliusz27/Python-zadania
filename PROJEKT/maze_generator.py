@@ -22,7 +22,7 @@ def compare_cells(cell1, cell2):
         return False
 
 
-def draw_grid(x_amount, y_amount, cell_w):
+def draw_grid(grid, x_amount, y_amount, cell_w):
     y = 0
     for i in range(0, y_amount):
         x = 25
@@ -36,9 +36,10 @@ def draw_grid(x_amount, y_amount, cell_w):
             x = x + cell_w
             pygame.display.flip()
 
+    return grid
 
-def draw_up(cell):
-    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y - cell_w + 2, cell_w - 3, cell_w * 2 - 3])
+
+def draw_up(grid, cell):
     up_neighbour = Cell(cell.x, cell.y - cell_w)
     for i in grid.keys():
         if compare_cells(cell, i):
@@ -46,15 +47,11 @@ def draw_up(cell):
         if compare_cells(up_neighbour, i):
             grid[i].append(cell)
 
-    #if cell in grid.keys():
-     #   print("jest")
-    #grid[cell].append()
-   # Cell(cell.x, cell.y - cell_w).walls.remove("d")
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y - cell_w + 2, cell_w - 3, cell_w * 2 - 3])
     pygame.display.flip()
 
 
-def draw_right(cell):
-    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
+def draw_right(grid, cell):
     right_neighbour = Cell(cell.x + cell_w, cell.y)
     for i in grid.keys():
         if compare_cells(cell, i):
@@ -62,14 +59,11 @@ def draw_right(cell):
         if compare_cells(right_neighbour, i):
             grid[i].append(cell)
 
-    #grid[cell].append(Cell(cell.x + cell_w, cell.y))
-    #cell.walls.remove('r')
-    #Cell(cell.x + cell_w, cell.y).walls.remove("l")
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
     pygame.display.flip()
 
 
-def draw_down(cell):
-    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w * 2 - 3])
+def draw_down(grid, cell):
     down_neighbour = Cell(cell.x, cell.y + cell_w)
     for i in grid.keys():
         if compare_cells(cell, i):
@@ -77,27 +71,31 @@ def draw_down(cell):
         if compare_cells(down_neighbour, i):
             grid[i].append(cell)
 
-    #grid[cell].append(Cell(cell.x, cell.y + cell_w))
-   # cell.walls.remove('d')
-    #Cell(cell.x, cell.y + cell_w).walls.remove("u")
+    pygame.draw.rect(screen, BLUE, [cell.x + 2, cell.y + 2, cell_w - 3, cell_w * 2 - 3])
     pygame.display.flip()
 
 
-def draw_left(cell):
-    pygame.draw.rect(screen, BLUE, [cell.x - cell_w + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
+def draw_left(grid, cell):
     left_neighbour = Cell(cell.x - cell_w, cell.y)
     for i in grid.keys():
         if compare_cells(cell, i):
             grid[i].append(left_neighbour)
         if compare_cells(left_neighbour, i):
             grid[i].append(cell)
-    #grid[cell].append(Cell(cell.x - cell_w, cell.y))
-    #cell.walls.remove('l')
-    #Cell(cell.x - cell_w, cell.y).walls.remove("r")
+
+    pygame.draw.rect(screen, BLUE, [cell.x - cell_w + 2, cell.y + 2, cell_w * 2 - 3, cell_w - 3])
     pygame.display.flip()
 
 
-def draw_maze(cell_w):
+def draw_path(cell):
+    pygame.draw.rect(screen, YELLOW, [cell.x + cell_w/4, cell.y + cell_w/4, cell.x + 3*cell_w/4, cell.y + 3*cell_w/4])
+    pygame.display.flip()
+
+
+
+def draw_maze(grid, cell_w):
+    stack, visited = [], []
+
     cell = Cell(list(grid.keys())[0].x, list(grid.keys())[0].y)
     stack.append(cell)
 
@@ -124,28 +122,42 @@ def draw_maze(cell_w):
             rand_direction = directions[number]
 
             if rand_direction == "u":
-                draw_up(cell)
+                draw_up(grid, cell)
                 cell = Cell(cell.x, cell.y - cell_w)
             elif rand_direction == "r":
-                draw_right(cell)
+                draw_right(grid, cell)
                 cell = Cell(cell.x + cell_w, cell.y)
             elif rand_direction == "d":
-                draw_down(cell)
+                draw_down(grid, cell)
                 cell = Cell(cell.x, cell.y + cell_w)
             elif rand_direction == "l":
-                draw_left(cell)
+                draw_left(grid, cell)
                 cell = Cell(cell.x - cell_w, cell.y)
             stack.append(cell)
         else:
             cell = stack.pop()
 
-        #print("(", cell.x, cell.y, ") : ", len(cell.walls))
-
-    for i in grid.keys():
-        print(i.x, i.y, " -> ")
-        for j in range(len(grid[i])):
-            print(grid[i][j].x, grid[i][j].y)
+   # for i in grid.keys():
+   #     print(i.x, i.y, " -> ")
+   #     for j in range(len(grid[i])):
+   #         print(grid[i][j].x, grid[i][j].y)
     print("koniec")
+    return grid
+
+
+def find_path():
+    last_nr = len(list(grid.keys()))
+    last_cell = list(grid.keys())[last_nr-1]
+    print(last_cell.x, last_cell.y)
+
+    cell = list(grid.keys())[0]
+    stack = []
+    visited = []
+
+    while not compare_cells(cell, last_cell):
+        stack.append(cell)
+        visited.append(cell)
+
 
 
 def main():
@@ -174,10 +186,11 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
 
     grid = {}
-    visited = []
-    stack = []
+    #visited = []
+    #stack = []
 
     cell_w = 25
-    draw_grid(3, 3, cell_w)
-    draw_maze(cell_w)
+    grid = draw_grid(grid, 3, 3, cell_w)
+    grid = draw_maze(grid, cell_w)
+    find_path()
     main()
